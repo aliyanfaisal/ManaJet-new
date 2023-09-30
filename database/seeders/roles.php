@@ -43,12 +43,23 @@ class roles extends Seeder
         ];
 
         foreach($roles as $role){
-            \App\Models\Role::create([
-                "role_name"=> $role[0],
-                "role_description"=> $role[1],
-                "parent_id"=>isset($role[3])? $role[3] : null,
-                "status"=> "active"
-            ]);
+
+            if(!isset($role[2])){
+            
+                \App\Models\Role::create([
+                    "role_name"=> $role[0],
+                    "role_description"=> $role[1],
+                    "status"=> "active"
+                ]);
+            }
+            else{
+                \App\Models\Role::create([
+                    "role_name"=> $role[0],
+                    "role_description"=> $role[1],
+                    "parent_id"=> $role[2] ,
+                    "status"=> "active"
+                ]);
+            }
         }
     }
 }

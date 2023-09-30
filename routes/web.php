@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\dashboard\DashboardController;
-use App\Http\Controllers\Project\ProjectCategoriesController;
-use App\Http\Controllers\Project\ProjectController;
-use App\Http\Controllers\Task\TaskController;
-use App\Http\Controllers\Ticket\TicketController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
+use App\Http\Controllers\Task\TaskController;
+use App\Http\Controllers\Ticket\TicketController;
+use App\Http\Controllers\Project\ProjectController;
+use App\Http\Controllers\dashboard\DashboardController;
+use App\Http\Controllers\Project\ProjectCategoriesController;
+use App\Http\Controllers\Team\TeamController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +68,9 @@ Route::prefix("/pm/dashboard")->middleware("auth")->group(function(){
     Route::resource('tasks', TaskController::class);
 
     Route::resource('tickets', TicketController::class);
+
+    Route::resource("team", TeamController::class);
+
 
 });
 

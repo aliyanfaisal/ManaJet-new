@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string("team_name",100);
             $table->string("team_description", 500)->nullable();
-            $table->foreignId("team_lead_id")->references("id")->on("users")->onDelete("cascade")->nullable();
+            $table->foreignId("team_lead_id")->nullable()->references("id")->on("users")->onDelete("cascade");
+
+            $table->foreignId("team_category_id")->nullable()->references("id")->on("project_categories")->onDelete("cascade");
             $table->timestamps();
         });
     }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string("cat_name", 100);
             $table->text("cat_description")->nullable();
 
-            $table->foreignId("parent_cat_id")->references("id")->on("project_categories")->onDelete("cascade")->nullable();
+            $table->foreignId("parent_cat_id")->nullable()->references("id")->on("project_categories")->onDelete("cascade");
 
             $table->timestamps();
         });

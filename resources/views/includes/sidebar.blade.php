@@ -87,11 +87,11 @@
                 </li>
                 <li class="app-sidebar__heading">Teams</li>
                 <li>
-                    <a href="forms-controls.html">
+                    <a href="{{route('team.index')}}">
                         <i class="metismenu-icon pe-7s-mouse">
                         </i>All Teams
                     </a>
-                    <a href="forms-controls.html">
+                    <a href="{{route('team.create')}}">
                         <i class="metismenu-icon pe-7s-mouse">
                         </i>Add a Team
                     </a>

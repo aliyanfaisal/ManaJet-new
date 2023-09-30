@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("role_name",100);
             $table->string("role_description", 500)->nullable();
-            $table->foreignId("parent_id")->references("id")->on("roles")->onDelete("cascade")->nullable();
+            $table->foreignId("parent_id")->nullable()->references("id")->on("roles")->onDelete("cascade");
             $table->string("status",20)->nullable();
 
             $table->timestamps();
