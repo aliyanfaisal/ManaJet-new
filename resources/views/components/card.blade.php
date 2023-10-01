@@ -1,5 +1,5 @@
-@props(['title', 'tab1', 'tab2'])
-<div class="mb-3 card">
+@props(['title', 'tab1', 'tab2', 'classes'=>""])
+<div class="mb-3 card {{$classes}}">
     <div class="card-header-tab card-header-tab-animation card-header">
         <div class="card-header-title">
             <i class="header-icon lnr-apartment icon-gradient bg-love-kiss"> </i>

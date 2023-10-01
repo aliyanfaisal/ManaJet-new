@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\User\UsersController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
@@ -69,9 +70,9 @@ Route::prefix("/pm/dashboard")->middleware("auth")->group(function(){
 
     Route::resource('tickets', TicketController::class);
 
-    Route::resource("team", TeamController::class);
+    Route::resource("teams", TeamController::class);
 
-
+    Route::resource("users", UsersController::class);
 });
 
 

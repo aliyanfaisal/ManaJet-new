@@ -87,30 +87,30 @@
                 </li>
                 <li class="app-sidebar__heading">Teams</li>
                 <li>
-                    <a href="{{route('team.index')}}">
+                    <a href="{{route('teams.index')}}">
                         <i class="metismenu-icon pe-7s-mouse">
                         </i>All Teams
                     </a>
-                    <a href="{{route('team.create')}}">
+                    <a href="{{route('teams.create')}}">
                         <i class="metismenu-icon pe-7s-mouse">
                         </i>Add a Team
                     </a>
                 </li>
                 <li>
-                    <a href="forms-layouts.html">
+                    <a href="">
                         <i class="metismenu-icon pe-7s-eyedropper">
                         </i>Team Stats
                     </a>
                 </li>
                 <li class="app-sidebar__heading">Users</li>
                 <li>
-                    <a href="charts-chartjs.html">
+                    <a href="{{route('users.index')}}">
                         <i class="metismenu-icon pe-7s-graph2">
                         </i>
                         All Users
                     </a>
 
-                    <a href="charts-chartjs.html">
+                    <a href="{{route('users.create')}}">
                         <i class="metismenu-icon pe-7s-graph2">
                         </i>
                         User Roles
