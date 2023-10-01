@@ -34,12 +34,12 @@
 
                             <x-fancy-table-body>
                                 <tr>
-                                    <td class="text-center text-muted">#347</td>
+                                    <td class="text-center text-muted">#1</td>
                                     <td>
                                         <div class="widget-content p-0">
                                             <div class="widget-content-wrapper"> 
                                                 <div class="widget-content-left flex2">
-                                                    <div class="widget-heading">Ruben Tillman</div>
+                                                    <div class="widget-heading">Install Wordpress</div>
                                                     <div class="widget-subheading opacity-7" style="font-size: 12px">
                                                         <i class="fa fa-user"> Aliyan Faisal </i>
                                                     </div>
@@ -50,11 +50,151 @@
  
 
                                     <td class="text-center">
-                                        <div class="badge badge-info">Website Development</div>
+                                        <div class="badge badge-info">Aliyan's Website</div>
                                     </td>
  
                                     <td class="text-center">
                                         <div class="badge badge-success">Completed</div>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-primary btn-sm">
+                                            View/Edit
+                                        </button>
+
+                                        <button type="button" class="btn btn-success btn-sm">
+                                            Mark Complete
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center text-muted">#1</td>
+                                    <td>
+                                        <div class="widget-content p-0">
+                                            <div class="widget-content-wrapper"> 
+                                                <div class="widget-content-left flex2">
+                                                    <div class="widget-heading">Install Wordpress</div>
+                                                    <div class="widget-subheading opacity-7" style="font-size: 12px">
+                                                        <i class="fa fa-user"> Aliyan Faisal </i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+ 
+
+                                    <td class="text-center">
+                                        <div class="badge badge-info">Aliyan's Website</div>
+                                    </td>
+ 
+                                    <td class="text-center">
+                                        <div class="badge badge-success">Completed</div>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-primary btn-sm">
+                                            View/Edit
+                                        </button>
+
+                                        <button type="button" class="btn btn-success btn-sm">
+                                            Mark Complete
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center text-muted">#2</td>
+                                    <td>
+                                        <div class="widget-content p-0">
+                                            <div class="widget-content-wrapper"> 
+                                                <div class="widget-content-left flex2">
+                                                    <div class="widget-heading">Createa a contact Form</div>
+                                                    <div class="widget-subheading opacity-7" style="font-size: 12px">
+                                                        <i class="fa fa-user"> Saira</i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+ 
+
+                                    <td class="text-center">
+                                        <div class="badge badge-info">lingo lad</div>
+                                    </td>
+ 
+                                    <td class="text-center">
+                                        <div class="badge badge-success">penfing</div>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-primary btn-sm">
+                                            View/Edit
+                                        </button>
+
+                                        <button type="button" class="btn btn-success btn-sm">
+                                            Mark Complete
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center text-muted">#3</td>
+                                    <td>
+                                        <div class="widget-content p-0">
+                                            <div class="widget-content-wrapper"> 
+                                                <div class="widget-content-left flex2">
+                                                    <div class="widget-heading">Build landing page</div>
+                                                    <div class="widget-subheading opacity-7" style="font-size: 12px">
+                                                        <i class="fa fa-user"> Aliyan Faisal </i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+ 
+
+                                    <td class="text-center">
+                                        <div class="badge badge-info">UrbanSofts website</div>
+                                    </td>
+ 
+                                    <td class="text-center">
+                                        <div class="badge badge-success">Completed</div>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-primary btn-sm">
+                                            View/Edit
+                                        </button>
+
+                                        <button type="button" class="btn btn-success btn-sm">
+                                            Mark Complete
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center text-muted">#4</td>
+                                    <td>
+                                        <div class="widget-content p-0">
+                                            <div class="widget-content-wrapper"> 
+                                                <div class="widget-content-left flex2">
+                                                    <div class="widget-heading">Ui Ux Designing</div>
+                                                    <div class="widget-subheading opacity-7" style="font-size: 12px">
+                                                        <i class="fa fa-user"> zeshan </i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+ 
+
+                                    <td class="text-center">
+                                        <div class="badge badge-info">Aliyan's Website</div>
+                                    </td>
+ 
+                                    <td class="text-center">
+                                        <div class="badge badge-success">Pending</div>
                                     </td>
 
                                     <td class="text-center">

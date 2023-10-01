@@ -16,39 +16,85 @@
                                 <x-fancy-table-head>
                                     <tr>
                                         <th class="text-center">Team Lead</th>
-                                        <th class="text-center">Project Completed</th>
+                                        <th class="text-center">Projects Completed</th>
                                     </tr>
                                 </x-fancy-table-head>
     
                                 <x-fancy-table-body>
                                     <tr>
                                         <td class="text-center">
-                                            <div class="badge badge-info">Website Development</div>
+                                            <div class="badge badge-info">Aliyan Faisal</div>
                                         </td>
      
                                         <td class="text-center">
-                                            <div class="badge badge-success">Completed</div>
+                                            <div class="badge badge-success">5</div>
                                         </td>
 
                                     </tr>
                                 </x-fancy-table-body>
                             </x-fancy-table>
                             <p class="mt-3 text-center" style="line-height: 24px"> 
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab ullam, dolorem esse dolores, voluptate atque sit cupiditate nulla nisi assumenda reprehenderit doloribus quam tempora in? Dolores eum numquam laudantium placeat.
+                                A web development team under aliya faisal
                             </p>
                             
                         </x-card>
                     </div>
 
                     <div class="col-md-4">
-                        <x-card title="Eagle Mobile Team">
+                        <x-card title="Eagle Mobile Team" tab1='<b class="badge badge-info" id="preview_cat">Graphics</b>'>
+                            <x-fancy-table>
+                                <x-fancy-table-head>
+                                    <tr>
+                                        <th class="text-center">Team Lead</th>
+                                        <th class="text-center">Projects Completed</th>
+                                    </tr>
+                                </x-fancy-table-head>
+    
+                                <x-fancy-table-body>
+                                    <tr>
+                                        <td class="text-center">
+                                            <div class="badge badge-info">Zeshan</div>
+                                        </td>
+     
+                                        <td class="text-center">
+                                            <div class="badge badge-success">2</div>
+                                        </td>
 
+                                    </tr>
+                                </x-fancy-table-body>
+                            </x-fancy-table>
+                            <p class="mt-3 text-center" style="line-height: 24px"> 
+                            Graphic designing team
+                            </p>
                         </x-card>
                     </div>
 
                     <div class="col-md-4">
-                        <x-card title="Web Team 2">
+                        <x-card title="Web Team 2" tab1='<b class="badge badge-info" id="preview_cat">Website Development</b>'>
+                            <x-fancy-table>
+                                <x-fancy-table-head>
+                                    <tr>
+                                        <th class="text-center">Team Lead</th>
+                                        <th class="text-center">Projects Completed</th>
+                                    </tr>
+                                </x-fancy-table-head>
+    
+                                <x-fancy-table-body>
+                                    <tr>
+                                        <td class="text-center">
+                                            <div class="badge badge-info">Saira</div>
+                                        </td>
+     
+                                        <td class="text-center">
+                                            <div class="badge badge-success">3</div>
+                                        </td>
 
+                                    </tr>
+                                </x-fancy-table-body>
+                            </x-fancy-table>
+                            <p class="mt-3 text-center" style="line-height: 24px"> 
+                            Web Development team 2
+                            </p>
                         </x-card>
                     </div>
 

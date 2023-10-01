@@ -17,8 +17,8 @@
                                         <x-fancy-table-head>
                                             <tr>
                                                 <th>Name</th>
-                                                <th class="text-center">Parent Category</th>
-                                                <th class="text-center">Description</th>
+                                                <th class="text-center">Project Name</th>
+                                                <th class="text-center">Prioriry</th>
                                                 <th class="text-center">Actions</th>
                                             </tr>
                                         </x-fancy-table-head>
@@ -29,9 +29,8 @@
                                                     <div class="widget-content p-0">
                                                         <div class="widget-content-wrapper"> 
                                                             <div class="widget-content-left flex2">
-                                                                <div class="widget-heading">Ruben Tillman</div>
-                                                                <div class="widget-subheading opacity-7">Etiam sit amet orci eget
-                                                                </div>
+                                                                <div class="widget-heading">Contact Form not working</div>
+                                                                <div class="widget-subheading opacity-7">Landing page contact form                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -39,11 +38,43 @@
              
             
                                                 <td class="text-center">
-                                                    <div class="badge badge-info">Website Development</div>
+                                                    <div class="badge badge-info">UrbanSofts Website</div>
                                                 </td>
              
                                                 <td class="text-center">
-                                                    <div class="badge badge-success">Completed</div>
+                                                    <div class="badge badge-warning">medium</div>
+                                                </td>
+            
+                                                <td class="text-center">
+                                                    <button type="button" class="btn btn-primary btn-sm">
+                                                        View/Edit
+                                                    </button>
+            
+                                                    <button type="button" class="btn btn-danger btn-sm">
+                                                        Delete
+                                                    </button>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <div class="widget-content p-0">
+                                                        <div class="widget-content-wrapper"> 
+                                                            <div class="widget-content-left flex2">
+                                                                <div class="widget-heading">Error while installing</div>
+                                                                <div class="widget-subheading opacity-7">Not installing on Oneplus 7                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+             
+            
+                                                <td class="text-center">
+                                                    <div class="badge badge-info">Test Mobile App</div>
+                                                </td>
+             
+                                                <td class="text-center">
+                                                    <div class="badge badge-danger">high</div>
                                                 </td>
             
                                                 <td class="text-center">
@@ -66,12 +97,13 @@
                         <x-card title="All Solved Tickets">
                             <div class="table-responsive ">
 
+                              
                                 <x-fancy-table>
                                     <x-fancy-table-head>
                                         <tr>
                                             <th>Name</th>
-                                            <th class="text-center">Parent Category</th>
-                                            <th class="text-center">Description</th>
+                                            <th class="text-center">Project Name</th>
+                                            <th class="text-center">Prioriry</th>
                                             <th class="text-center">Actions</th>
                                         </tr>
                                     </x-fancy-table-head>
@@ -82,9 +114,8 @@
                                                 <div class="widget-content p-0">
                                                     <div class="widget-content-wrapper"> 
                                                         <div class="widget-content-left flex2">
-                                                            <div class="widget-heading">Ruben Tillman</div>
-                                                            <div class="widget-subheading opacity-7">Etiam sit amet orci eget
-                                                            </div>
+                                                            <div class="widget-heading">Renane title in UI ux</div>
+                                                            <div class="widget-subheading opacity-7">From saira to saira shah                                                                </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -92,11 +123,11 @@
          
         
                                             <td class="text-center">
-                                                <div class="badge badge-info">Website Development</div>
+                                                <div class="badge badge-info">UrbanSofts Website</div>
                                             </td>
          
                                             <td class="text-center">
-                                                <div class="badge badge-success">Completed</div>
+                                                <div class="badge badge-success">high</div>
                                             </td>
         
                                             <td class="text-center">

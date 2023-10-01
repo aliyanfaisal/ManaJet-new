@@ -51,7 +51,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h6 class="text-muted text-uppercase font-size-md opacity-5 font-weight-normal">Ilnesses
+                                    <h6 class="text-muted text-uppercase font-size-md opacity-5 font-weight-normal">Member with active Tasks
                                     </h6>
                                     <div class="scroll-area-sm">
                                         <div class="scrollbar-container">
