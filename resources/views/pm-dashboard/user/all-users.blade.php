@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <x-card title="All Users">
+            <x-card title="All Users" tab1="<a href='{{route('users.create')}}' class='btn btn-primary '>Add New User</a>">
                 <div class="table-responsive">
 
                     <x-fancy-table>

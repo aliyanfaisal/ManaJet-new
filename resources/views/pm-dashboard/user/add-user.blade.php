@@ -3,20 +3,22 @@
 @section('content')
     <div class="container-fluid w-8">
         <div>
-            <x-card title="Add a New Project">
+            <x-card title="Add a New User">
 
                 <div class="container-fluid px-md-5">
 
 
-                    <form class="needs-validation row" novalidate="" method="{{ route('project.store') }}">
+                    <form class="needs-validation row" novalidate="" method="post" enctype="multipart/form-data"
+                        action="{{ route('users.store') }}">
                         @csrf
                         <div class="col-md-4 order-md-2 mb-4">
-                            <x-card title="Project Preview">
+
+                            <x-card title="User Preview" classes="">
                                 <div class="text-center">
                                     <img class="m-auto" src="{{ asset('assets/images/logo.png') }}" alt="">
                                     <b class="badge badge-info position-absolute"
                                         style="left: 7px; top: 70px;  font-size: 18px;" id="preview_budget">80000PKR</b>
-                                    <h5 class="font-weight-bold my-3">Test Project</h5>
+                                    <h5 class="font-weight-bold my-3">Test User</h5>
                                     <hr>
                                     <div class="d-flex justify-content-between">
                                         <span><b class="badge badge-info" id="preview_cat">Website Development</b></span>
@@ -26,49 +28,36 @@
                             </x-card>
 
 
-                            <h5 class="mb-3">Project Status</h5>
-
-                            <div class="d-block my-3">
-                                <div class="custom-control custom-radio">
-                                    <input id="project_status" name="project_status" type="radio"
-                                        class="custom-control-input" checked="" required="">
-                                    <label class="custom-control-label" for="project_status">Publish</label>
-                                </div>
-                                <div class="custom-control custom-radio">
-                                    <input id="project_status" name="project_status" type="radio"
-                                        class="custom-control-input" required="">
-                                    <label class="custom-control-label" for="project_status">Draft</label>
-                                </div>
-                            </div>
-                            <hr class="mb-4">
-                            <button class="btn btn-primary btn-lg btn-block" type="submit">Save Project</button>
-
 
                         </div>
                         <div class="col-md-8 order-md-1">
-                            <h4 class="mb-3">Project Details</h4>
+
+                            <x-display-errors />
+
+                            <x-display-form-errors />
+                            <h4 class="mb-3">User Details</h4>
                             <div>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label for="project_name">Project Name</label>
-                                        <input type="text" class="form-control" name="project_name" id="project_name"
-                                            placeholder="Project Title" value="" required="">
+                                        <label for="name">User Name</label>
+                                        <input type="text" class="form-control" name="name" id="name"
+                                            placeholder="User Name" value="{{old('name')}}" required="">
                                         <div class="invalid-feedback">
-                                            Project name is required.
+                                            User name is required.
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
 
-                                        <label for="project_category">Project Category</label>
-                                        <select class="custom-select d-block w-100" name="project_category"
-                                            id="project_category" required="">
+                                        <label for="role_id">User Role</label>
+                                        <select class="custom-select d-block w-100" name="role_id" id="role_id"
+                                            required="">
                                             <option value="">Choose...</option>
-                                            @foreach ($p_cats as $cat)
-                                                <option value="{{ $cat->id }}">{{ $cat->cat_name }}</option>
+                                            @foreach ($roles as $role)
+                                                <option @if(old('role_id')==$role->id) selected @endif value="{{ $role->id }}">{{ $role->role_name }}</option>
                                             @endforeach
                                         </select>
                                         <div class="invalid-feedback">
-                                            Please select a Category.
+                                            Please select a Role.
                                         </div>
 
 
@@ -80,19 +69,20 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
 
-                                        <label for="budget">Project budget</label>
-                                        <input type="number" class="form-control" value="0" id="budget"
-                                            placeholder="" value="" required="">
+                                        <label for="email">E-mail</label>
+                                        <input type="email" class="form-control" id="email"
+                                            placeholder="A vaild Email" value="{{old('email')}}" name="email" required="">
                                         <div class="invalid-feedback">
-                                            Budget field is required.
+                                            Email field is required.
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="team_id">Team</label>
-                                        <select name="team_id" class="custom-select d-block w-100" id="team_id"
-                                            required="">
-                                            <option value="">Choose...</option>
-                                            <option>Teams</option>
+                                        <select name="team_id" class="custom-select d-block w-100" id="team_id">
+                                            <option  value="">Choose...</option> 
+                                            @foreach ($teams as $team)
+                                                <option @if(old('team_id')==$team->id) selected @endif value="{{ $team->id }}">{{ $tean->team_name }}</option>
+                                            @endforeach
                                         </select>
                                         <div class="invalid-feedback">
                                             Team is required.
@@ -102,27 +92,30 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-12  mb-3">
-                                        <label for="project_image">Project Image</label>
-                                        <input type="file" class=" form-control-file " name="project_image"
-                                            id="project_image">
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="phone">Phone</label>
+                                        <input type="phone" name="phone" class="form-control" id="phone" placeholder="Phone Number"
+                                            value="{{old('phone')}}" required="">
+                                        <div class="invalid-feedback">
+                                            Invalid Phone.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="profile_picture">User Image</label>
+                                        <input type="file" class=" form-control-file " name="profile_picture"
+                                            id="profile_picture">
                                         <div class="invalid-feedback">
                                             Invalid Image.
                                         </div>
-                                        <hr>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="project_description">Project Description</label>
-                                    <textarea rows="7" class="form-control" name="project_description" id="project_description"
-                                        placeholder="1234 Main St" required=""></textarea>
-                                    <div class="invalid-feedback">
-                                        Invalid description.
                                     </div>
                                 </div>
 
 
+
+                                <hr class="mb-4">
+                                <button class="btn btn-primary btn-lg btn-block" type="submit">Save User</button>
                             </div>
                         </div>
                     </form>

@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Models\Role;
+use App\Models\Team;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\ProjectCategories;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Nette\Utils\Random;
 
 class UsersController extends Controller
 {
@@ -20,7 +26,9 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+        $roles= Role::where("status","active")->get();
+        $teams= Team::all();
+        return view("pm-dashboard.user.add-user", compact('roles','teams'));
     }
 
     /**
@@ -28,7 +36,29 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate(
+            [
+                "name" => 'required',
+                "role_id" => "required",
+                "email" => "required|email|unique:users,email",
+                "team_id" => "nullable",
+                "phone" => "required",
+                "profile_image" => "nullable"
+            ],
+            [
+                "name.required" => 'User Name is required',
+                "role_id.required" => "User Role is required",
+                "email.required" => "Email is required",
+                "phone.required" => "User Phone is required"
+            ]
+        );
+
+        $randPass=Random::generate(10);
+        $validated['password']= Hash::make($randPass);
+        $user=  User::create($validated);
+
+        return redirect()->back()->with(["message" => "<b>User added successfully.</b><br><b>Email:</b> {$validated['email']}<br><b>Password:</b> {$randPass}<br><br><b>NOTE:</b> Provide these credentials to the user and ask them to change the password.",
+         "result" => "success"]);        
     }
 
     /**

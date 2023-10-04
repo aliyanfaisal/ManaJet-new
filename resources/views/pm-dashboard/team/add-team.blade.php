@@ -27,15 +27,15 @@
                                     <h5>Current Members</h5>
                                     <div class="d-flex flex-wrap">
                                         <div class="form-check mr-4">
-                                            <input class="form-check-input" type="checkbox" name="team_members" value="" id=""
-                                                checked>
+                                            <input class="form-check-input" type="checkbox" name="team_members"
+                                                value="" id="" checked>
                                             <label class="form-check-label" style="font-size: 16px" for="">
                                                 Aliyan Faisal
                                             </label>
                                         </div>
                                         <div class="form-check mr-4">
-                                            <input class="form-check-input" type="checkbox" name="team_members" value="" id=""
-                                                checked>
+                                            <input class="form-check-input" type="checkbox" name="team_members"
+                                                value="" id="" checked>
                                             <label class="form-check-label" style="font-size: 16px" for="">
                                                 Ali Developer
                                             </label>
@@ -65,13 +65,15 @@
                                         <select class="custom-select d-block w-100" name="team_category" id="team_category"
                                             required="">
                                             <option value="">Choose...</option>
-                                            <option>United States</option>
+                                            @foreach ($p_cats as $cat)
+                                                <option value="{{ $cat->id }}">{{ $cat->cat_name }}</option>
+                                            @endforeach
                                         </select>
                                         <div class="invalid-feedback">
                                             Please select a Category.
                                         </div>
 
-                                        
+
                                     </div>
                                 </div>
 
@@ -132,5 +134,34 @@
                 });
             }, false);
         })();
+    </script>
+@endsection
+
+
+@section('js')
+
+    <script>
+
+        if (token == "") {
+            alert("Please login again, Token error")
+
+        } else {
+
+            $(document).on("change","#team_category", function(){
+                afbGetUsers($(this).val()).then(function(data){
+                   
+                    $(data).each(function(user){ 
+                        $("#team_lead_id").append("<option>"+($(this)[0].name)+"</option>")
+                    })
+                })
+                
+            })
+
+ 
+
+
+        }
+
+
     </script>
 @endsection

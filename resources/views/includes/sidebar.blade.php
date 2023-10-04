@@ -110,7 +110,7 @@
                         All Users
                     </a>
 
-                    <a href="{{route('users.create')}}">
+                    <a href="{{route('user-roles.index')}}">
                         <i class="metismenu-icon pe-7s-graph2">
                         </i>
                         User Roles

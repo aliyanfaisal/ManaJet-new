@@ -36,12 +36,20 @@
     </div>
 </div>
 </div>
-<script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+{{-- <script src="http://maps.google.com/maps/api/js?sensor=true"></script> --}}
 
-<script src="{{asset('js/jquery.min.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/main.js')}}">
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
+@php
+$token = Session::get("user_token");
+
+@endphp
+<script>
+    const token = '{{$token}}'
 </script>
 
-@yield("js")
+@include('includes.js-functions')
+@yield('js')
 </body>
+
 </html>

@@ -1,5 +1,7 @@
 <?php
 
+
+use App\Http\Controllers\UserRole\RoleController;
 use App\Http\Controllers\User\UsersController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -73,6 +75,8 @@ Route::prefix("/pm/dashboard")->middleware("auth")->group(function(){
     Route::resource("teams", TeamController::class);
 
     Route::resource("users", UsersController::class);
+
+    Route::resource("user-roles", RoleController::class);
 });
 
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
+use App\Models\ProjectCategories;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -21,7 +22,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view("pm-dashboard.project.add-project");
+        $p_cats= ProjectCategories::select("id","cat_name")->get();
+        return view("pm-dashboard.project.add-project",compact("p_cats"));
     }
 
     /**

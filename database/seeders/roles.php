@@ -15,30 +15,40 @@ class roles extends Seeder
         $roles = [
             [
                 "Project Manager",
-                "User with permission to set project with the highest level of access"
+                "User with the highest level of access"
             ],
 
             [
                 "Web Developer",
-                "User with abilities to build websites"
+                "User can build websites"
             ],
             [
                 "Mobile Developer",
-                "user with abilities to build mobile applications"
+                "User can build mobile applications"
             ],
             [
                 "Frontend Developer",
-                "user with abilities to build front side of website",
+                "User can build front side of website",
                 2
             ],
             [
                 "Backend Developer",
-                "user with abilities to build backend scripting",
+                "User can build backend scripting",
+                2
+            ],
+            [
+                "IOS Developer",
+                "User can build backend scripting",
+                3
+            ],
+            [
+                "Android Developer",
+                "User can build backend scripting",
                 3
             ],
             [
                 "Media Marketer",
-                "user with abilities to advertise"
+                "User can advertise"
             ]
         ];
 

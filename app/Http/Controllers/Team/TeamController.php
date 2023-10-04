@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Team;
 
 use Illuminate\Http\Request;
+use App\Models\ProjectCategories;
 use App\Http\Controllers\Controller;
 
 class TeamController extends Controller
@@ -21,7 +22,9 @@ class TeamController extends Controller
      */
     public function create()
     {
-        return view("pm-dashboard.team.add-team");
+        $p_cats = ProjectCategories::all();
+        
+        return view("pm-dashboard.team.add-team", compact('p_cats'));
     }
 
     /**

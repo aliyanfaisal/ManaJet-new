@@ -3,14 +3,14 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <x-card title="All Projects Categories">
+            <x-card title="All User Roles">
                 <div class="row">
 
                     <div class="col-md-4">
                         <form class="needs-validation" novalidate="" method="post"
-                            action="{{ route('project-categories.store') }}">
+                            action="{{ route('user-roles.store') }}">
                             @csrf
-                            <x-card title="Add New Category">
+                            <x-card title="Add New Role">
                                 <div class="">
 
                                     <x-display-errors />
@@ -19,33 +19,33 @@
                                     <div>
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
-                                                <label for="cat_name">Category Name</label>
-                                                <input type="text" class="form-control" name="cat_name" id="cat_name"
-                                                    placeholder="Category Name" value="{{old('cat_name')}}" required="">
+                                                <label for="role_name">Role Name</label>
+                                                <input type="text" class="form-control" name="role_name" id="role_name"
+                                                    placeholder="Role Name" value="{{old('role_name')}}" required="">
                                                 <div class="invalid-feedback">
-                                                    Category name is required.
+                                                    Role name is required.
                                                 </div>
                                             </div>
                                             <div class="col-md-6 mb-3">
 
-                                                <label for="parent_cat_id">Parent Category</label>
-                                                <select class="custom-select d-block w-100" name="parent_cat_id"
-                                                    id="parent_cat_id">
+                                                <label for="parent_id">Parent Role</label>
+                                                <select class="custom-select d-block w-100" name="parent_id"
+                                                    id="parent_id">
                                                     @php
-                                                        $pp_cats = $p_cats->filter(function ($value, $key) {
-                                                            if ($value->parent_cat_id == '') {
+                                                        $roles_dropdown = $roles->filter(function ($value, $key) {
+                                                            if ($value->parent_id == '') {
                                                                 return true;
                                                             }
                                                         });
                                                     @endphp
                                                     <option value="">Choose...</option>
-                                                    @foreach ($pp_cats as $cat)
-                                                        <option @if(old("parent_cat_id")==$cat->id) selected @endif value="{{ $cat->id }}">{{ $cat->cat_name }}</option>
+                                                    @foreach ($roles_dropdown as $role)
+                                                        <option @if(old("parent_id")==$role->id) selected @endif value="{{ $role->id }}">{{ $role->role_name }}</option>
                                                     @endforeach
 
                                                 </select>
                                                 <div class="invalid-feedback">
-                                                    Invalid Parent Category.
+                                                    Invalid Parent Role.
                                                 </div>
 
 
@@ -53,12 +53,27 @@
                                         </div>
 
                                         <div>
-                                            <label for="cat_description">Category Description</label>
-                                            <textarea class="form-control mb-3" name="cat_description" id="cat_description" rows="5">{{old('cat_description')}}</textarea>
+                                            <label for="role_description">Role Description</label>
+                                            <textarea required class="form-control mb-3" name="role_description" id="role_description" rows="5">{{old('role_description')}}</textarea>
                                         </div>
 
+                                        <h6 class="mb-3">Role Status</h6>
+
+                                        <div class="d-block my-3">
+                                            <div class="custom-control custom-radio">
+                                                <input id="status1" name="status" type="radio"
+                                                    class="custom-control-input" checked value="active"  >
+                                                <label class="custom-control-label" for="status1">Active</label>
+                                            </div>
+                                            
+                                            <div class="custom-control custom-radio">
+                                                <input id="status" name="status" type="radio"
+                                                    class="custom-control-input" value="draft" >
+                                                <label class="custom-control-label" for="status">Draft</label>
+                                            </div>
+                                        </div>
                                         <button class="btn btn-primary btn-lg btn-block" type="submit">Add
-                                            Category</button>
+                                            Role</button>
 
 
                                     </div>
@@ -74,10 +89,10 @@
                             <x-fancy-table-head>
                                 <tr>
                                     <th class="text-center">#</th>
-                                    <th>Name</th>
-                                    <th class="text-center">Parent Category</th>
-                                    <th class="text-center">Description</th>
-                                    <th class="text-center">Actions</th>
+                                    <th>Role Name</th>
+                                    <th class="">Parent Role</th>
+                                    <th class="">Description</th>
+                                    <th class="">Actions</th>
                                 </tr>
                             </x-fancy-table-head>
 
@@ -86,35 +101,35 @@
                                     $i = isset($_GET['page']) ? intval($_GET['page']) : 0;
                                     $i++;
                                 @endphp
-                                @foreach ($p_cats as $cat)
+                                @foreach ($roles as $role)
                                     <tr>
                                         <td class="text-center text-muted">#{{ $i }}</td>
                                         <td>
                                             <div class="widget-content p-0">
                                                 <div class="widget-content-wrapper">
                                                     <div class="widget-content-left flex2">
-                                                        <div class="widget-heading">{{ $cat->cat_name }}</div>
+                                                        <div class="widgtext-centeret-heading">{{ $role->role_name }}</div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
                                         @php
-                                            $parentCat = $cat->parentCategory();
+                                            $parentRole = $role->parentRole();
                                         @endphp
 
-                                        <td class="text-center">
-                                            @if ($parentCat)
-                                                <div class="badge badge-info">{{ $parentCat->cat_name }}</div>
+                                        <td class=" ">
+                                            @if ($parentRole)
+                                                <div class="badge badge-warning">{{ $parentRole->role_name }}</div>
                                             @endif
                                         </td>
 
-                                        <td class="text-center">
+                                        <td class=" ">
                                             <div class="widget-subheading opacity-7">
-                                                {{ Illuminate\Support\Str::limit($cat->cat_description, 30) }}
+                                                {{ Illuminate\Support\Str::limit($role->role_description, 40) }}
                                             </div>
                                         </td>
 
-                                        <td class="text-center">
+                                        <td class=" ">
                                             <button type="button" class="btn btn-primary btn-sm">
                                                 View/Edit
                                             </button>
