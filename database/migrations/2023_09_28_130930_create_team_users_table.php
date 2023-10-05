@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('team_roles', function (Blueprint $table) {
+        Schema::create('team_users', function (Blueprint $table) {
             $table->id();
             $table->foreignId("team_id")->references("id")->on("teams")->onDelete("cascade");
             $table->foreignId("user_id")->references("id")->on("users")->onDelete("cascade");
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('team_roles');
+        Schema::dropIfExists('team_users');
     }
 };

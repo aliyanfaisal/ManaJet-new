@@ -23,7 +23,7 @@ return new class extends Migration
 
             $table->foreignId("team_id")->references("id")->on("teams")->onDelete("cascade")->nullable();
 
-            $table->foreignId("profile_image_id")->references("id")->on("files")->onDelete("cascade")->nullable();
+            $table->foreignId("profile_image_id")->nullable()->references("id")->on("files")->onDelete("cascade");
 
             $table->string("project_status",20)->nullable()->default("draft");
             

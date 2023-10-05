@@ -8,4 +8,34 @@ use Illuminate\Database\Eloquent\Model;
 class Team extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        "team_name",
+        "category_id",
+        "team_lead_id",
+        'team_description'
+    ];
+
+
+    public function teamLead()
+    {
+        return $this->belongsTo(User::class, "team_lead_id", "id");
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(ProjectCategories::class, "category_id", "id");
+    }
+    
+    public function members()
+    {
+        return $this->hasMany(TeamUsers::class, "team_id", "id");
+    }
+
+    public function getMemberIDs()
+    {
+        return $this->members->map(function ($item, $key) {
+            return $item->user_id;
+        })->toArray();
+    }
 }

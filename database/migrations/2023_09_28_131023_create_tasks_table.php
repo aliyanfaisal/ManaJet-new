@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string("priority", 20);
             $table->integer("task_step_no");
 
+            $table->string("status", 20);
+
             $table->boolean("has_attachments")->default(0);
             
 

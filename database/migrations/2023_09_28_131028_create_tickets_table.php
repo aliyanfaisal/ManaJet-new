@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignId("reference_task_id")->references("id")->on("tasks")->onDelete("cascade")->nullable();
 
             $table->string("priority", 20);
-
+            $table->string("status", 20);
             $table->boolean("has_attachments")->default(0);
             $table->timestamps();
         });

@@ -92,4 +92,17 @@ class UsersController extends Controller
     {
         //
     }
+
+    public function getUsers(Request $request){
+
+        $role_id= $request->get("user_id");
+
+        if($role_id){
+            return User::where("role_id", $role_id)->get();
+        }
+        else{
+            return  User::all();
+        }
+
+    }
 }
