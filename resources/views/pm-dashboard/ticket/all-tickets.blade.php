@@ -6,11 +6,11 @@
             @php
               $title= "Recent Tickets";
             @endphp
-            <x-card :title="$title">
+            <x-card :title="$title" classes="border border-info">
                 <div class="row">
 
                     <div class="col-md-6">
-                            <x-card title="All Un-Solved Tickets">
+                            <x-card title="All Un-Solved Tickets" classes="border border-info">
                                 <div class="table-responsive ">
 
                                     <x-fancy-table>
@@ -94,7 +94,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <x-card title="All Solved Tickets">
+                        <x-card title="All Solved Tickets" classes="border border-info">
                             <div class="table-responsive ">
 
                               

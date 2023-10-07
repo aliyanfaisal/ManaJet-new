@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-fluid w-8">
         <div>
-            <x-card title="Add a New User">
+            <x-card title="Add a New User" tab1="<a href='{{route('users.index')}}' class='btn btn-primary '>All Users</a>" classes="border border-info">
 
                 <div class="container-fluid px-md-5">
 
@@ -13,7 +13,7 @@
                         @csrf
                         <div class="col-md-4 order-md-2 mb-4">
 
-                            <x-card title="User Preview" classes="">
+                            <x-card title="User Preview" classes="border border-info">
                                 <div class="text-center">
                                     <img class="m-auto" src="{{ asset('assets/images/logo.png') }}" alt="">
                                     <b class="badge badge-info position-absolute"
@@ -81,7 +81,7 @@
                                         <select name="team_id" class="custom-select d-block w-100" id="team_id">
                                             <option  value="">Choose...</option> 
                                             @foreach ($teams as $team)
-                                                <option @if(old('team_id')==$team->id) selected @endif value="{{ $team->id }}">{{ $tean->team_name }}</option>
+                                                <option @if(old('team_id')==$team->id) selected @endif value="{{ $team->id }}">{{ $team->team_name }}</option>
                                             @endforeach
                                         </select>
                                         <div class="invalid-feedback">

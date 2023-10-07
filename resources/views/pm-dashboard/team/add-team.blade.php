@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-fluid w-8">
         <div>
-            <x-card title="Add a New Team">
+            <x-card title="Add a New Team" classes="border border-info">
 
                 <div class="container-fluid px-md-5">
 
@@ -13,7 +13,7 @@
 
                     <div class="needs-validation row" novalidate="">
                         <form autocomplete="false" class="col-md-6 order-md-2">
-                            <x-card title="Add Team Members" classes="w-100 " >
+                            <x-card title="Add Team Members" classes="w-100 border-info">
                                 @if (Request::is('*/teams/create'))
                                     <div class="overlay-disable" style="">
                                     <h5><b>Add a Team first</b>.</h5>

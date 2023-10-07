@@ -17,7 +17,7 @@ class TeamController extends Controller
      */
     public function index()
     {
-        $teams= Team::paginate(20);
+        $teams= Team::orderBy("id", "desc")->paginate(20);
         return view("pm-dashboard.team.all-teams", compact("teams"));
     }
 

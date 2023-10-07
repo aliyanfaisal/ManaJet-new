@@ -11,7 +11,7 @@ class RoleController extends Controller
      
     public function index(){
 
-        $roles= Role::all();
+        $roles= Role::orderBy("id", "desc")->paginate(20);
 
         return view("pm-dashboard.user-role.all-roles" , compact("roles"));
     }

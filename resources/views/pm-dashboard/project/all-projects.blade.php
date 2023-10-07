@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <x-card title="All Projects">
+            <x-card title="All Projects" classes="border border-info">
                 <div class="table-responsive">
 
                     <x-fancy-table>

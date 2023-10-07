@@ -3,26 +3,28 @@
 @section('content')
     <div class="container-fluid w-8">
         <div>
-            <x-card title="Add a New Project" tab1="<a href='{{route('project.index')}}' class='btn btn-primary '>All Projects</a>" classes="border border-info">
+            <x-card title="<h4><b>{{$project->project_name}}</b></h4>"
+                tab1="<a href='{{route('project.destroy', ['project'=>$project->id])}}' class='btn btn-danger '>Delete Projects</a>"
+                 classes="border border-info">
 
                 <div class="container-fluid px-md-5">
 
                     <x-display-errors />
 
                     <x-display-form-errors />
-                    <form enctype="multipart/form-data" autocomplete="off" class="needs-validation row" novalidate="" method="post" action="{{ route('project.store') }}">
+                    <form enctype="multipart/form-data" autocomplete="off" class="needs-validation row" novalidate="" method="post" action="{{ route('project.update', ['project'=>$project->id]) }}">
                         @csrf
                         <div class="col-md-4 order-md-2 mb-4">
                             <x-card title="Project Preview" classes="border border-info">
                                 <div class="text-center">
-                                    <img class="m-auto" src="{{ asset('assets/images/logo.png') }}" alt="">
+                                    <img class="m-auto" src="{{ $project->projectImageUrl()}}" alt="">
                                     <b class="badge badge-info position-absolute"
-                                        style="left: 7px; top: 70px;  font-size: 20px;" id="preview_budget">80000PKR</b>
-                                    <h5 class="font-weight-bold my-3">Test Project</h5>
+                                        style="left: 7px; top: 70px;  font-size: 20px;" id="preview_budget">{{$project->budget.env("CURRENCY_SYMBOL",'PKR')}}</b>
+                                    <h5 class="font-weight-bold my-3">{{$project->project_name}}</h5>
                                     <hr>
                                     <div class="d-flex justify-content-between">
-                                        <span><b class="badge badge-info fsize-1" id="preview_cat">Website Development</b></span>
-                                        <span><b class="badge badge-warning fsize-1"  id="preview_team">Team 1</b></span>
+                                        <span><b class="badge badge-info fsize-1" id="preview_cat">{{$project->category->cat_name}}</b></span>
+                                        <span><b class="badge badge-warning fsize-1" id="preview_team">{{$project->team->team_name}}</b></span>
                                     </div>
                                 </div>
                             </x-card>
@@ -43,18 +45,17 @@
                                 </div>
                             </div>
                             <hr class="mb-4">
-                            <button class="btn btn-primary btn-lg btn-block" type="submit">Save Project</button>
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Update Project</button>
 
 
                         </div>
-                        <div class="col-md-8 order-md-1">
-                            <h4 class="mb-3">Project Details</h4>
+                        <div class="col-md-8 order-md-1"> 
                             <div>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="project_name">Project Name</label>
                                         <input type="text" class="form-control" name="project_name" id="project_name"
-                                            placeholder="Project Title" value="{{old('project_name')}}" required="">
+                                            placeholder="Project Title" value="{{$project->project_name}}" required="">
                                         <div class="invalid-feedback">
                                             Project name is required.
                                         </div>
@@ -66,7 +67,7 @@
                                             id="project_category" required="">
                                             <option value="">Choose...</option>
                                             @foreach ($p_cats as $cat)
-                                                <option @selected(old('project_category'==$cat->id)) value="{{ $cat->id }}">{{ $cat->cat_name }}</option>
+                                                <option @selected($project->project_category==$cat->id) value="{{ $cat->id }}">{{ $cat->cat_name }}</option>
                                             @endforeach
                                         </select>
                                         <div class="invalid-feedback">
@@ -83,8 +84,8 @@
                                     <div class="col-md-6 mb-3">
 
                                         <label for="budget">Project budget</label>
-                                        <input type="number" name="budget" class="form-control" value="0" id="budget"
-                                            placeholder="" value="{{old('budget')}}" required="">
+                                        <input type="number" name="budget" class="form-control"  id="budget"
+                                            placeholder="" value="{{intval($project->budget)}}" required="">
                                         <div class="invalid-feedback">
                                             Budget field is required.
                                         </div>
@@ -95,7 +96,7 @@
                                             required="">
                                             <option value="">Choose...</option>
                                             @foreach ($teams as $team)
-                                                <option @selected(old('team_id'==$team->id)) value="{{ $team->id }}">{{ $team->team_name }}</option>
+                                                <option @selected($project->team_id==$team->id) value="{{ $team->id }}">{{ $team->team_name }}</option>
                                             @endforeach
                                         </select>
                                         <div class="invalid-feedback">
@@ -108,7 +109,7 @@
                                 <div class="row">
                                     <div class="col-12  mb-3">
                                         <label for="project_image">Project Image</label>
-                                        <input type="file" class=" form-control-file " value="{{old('project_image')}}" name="project_image"
+                                        <input type="file" class=" form-control-file " name="project_image"
                                             id="project_image">
                                         <div class="invalid-feedback">
                                             Invalid Image.
@@ -120,7 +121,7 @@
                                 <div class="mb-3">
                                     <label for="project_description">Project Description</label>
                                     <textarea rows="7" class="form-control" name="project_description" id="project_description"
-                                        placeholder="Summary of the project" required="">{{old('project_description')}}</textarea>
+                                        placeholder="Summary of the project" required="">{{$project->project_description}}</textarea>
                                     <div class="invalid-feedback">
                                         Invalid description.
                                     </div>

@@ -3,14 +3,14 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <x-card title="All Projects Categories">
+            <x-card title="All Projects Categories" classes="border border-info">
                 <div class="row">
 
                     <div class="col-md-4">
                         <form class="needs-validation" novalidate="" method="post"
                             action="{{ route('project-categories.store') }}">
                             @csrf
-                            <x-card title="Add New Category">
+                            <x-card title="Add New Category" classes="border border-info">
                                 <div class="">
 
                                     <x-display-errors />

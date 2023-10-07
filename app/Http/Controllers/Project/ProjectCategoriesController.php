@@ -13,7 +13,7 @@ class ProjectCategoriesController extends Controller
      */
     public function index()
     {
-        $p_cats = ProjectCategories::paginate(20);
+        $p_cats = ProjectCategories::orderBy("id", "desc")->paginate(20);
         return view("pm-dashboard.project.all-project-categories", compact("p_cats"));
     }
 

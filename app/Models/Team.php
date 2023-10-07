@@ -26,7 +26,7 @@ class Team extends Model
     {
         return $this->belongsTo(ProjectCategories::class, "category_id", "id");
     }
-    
+
     public function members()
     {
         return $this->hasMany(TeamUsers::class, "team_id", "id");
@@ -37,5 +37,10 @@ class Team extends Model
         return $this->members->map(function ($item, $key) {
             return $item->user_id;
         })->toArray();
+    }
+
+
+    public function completedProjects(){
+        return Project::where("team_id", $this->id)->where("project_status","complete")->count();
     }
 }

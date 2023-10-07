@@ -12,12 +12,14 @@
             @php
                 $title = 'All Teams';
             @endphp
-            <x-card :title="$title">
+            <x-card :title="$title" tab1="<a href='{{route('teams.create')}}' class='btn btn-primary '>Add a Team</a>" classes="border border-info">
                 <div class="row">
 
                     @foreach ($teams as $team )
                     <div class="col-md-4">
-                        <x-card title='<b class=" fsize-2">{{$team->team_name}}</b>' tab1='<b class="badge badge-info" id="preview_cat">{{$team->category->cat_name}}</b>'>
+                        <x-card title='<a href="{{route("teams.edit",["team"=>$team->id])}}" class=" fsize-2 " style="text-decoration:underline;font-weight:500">{{$team->team_name}}</a>' 
+                            tab1='<b class="badge badge-danger" id="preview_cat">{{$team->category->cat_name}}</b>'
+                            classes="border border-info">
 
                             <x-fancy-table>
                                 <x-fancy-table-head>
@@ -30,18 +32,18 @@
                                 <x-fancy-table-body>
                                     <tr>
                                         <td class="text-center">
-                                            <div class="badge badge-info" style="font-size:100%">{{$team->teamLead->name}}</div>
+                                            <div class="badge badge-info " style="font-size:100%">{{$team->teamLead->name}}</div>
                                         </td>
      
                                         <td class="text-center">
-                                            <div class="badge badge-success">5</div>
+                                            <div class="badge badge-success">{{$team->completedProjects()}}</div>
                                         </td>
 
                                     </tr>
                                 </x-fancy-table-body>
                             </x-fancy-table>
                             <p class="mt-3 text-center" style="line-height: 24px"> 
-                                A web development team under aliya faisal
+                                {{$team->team_description}}
                             </p>
                             
                         </x-card>

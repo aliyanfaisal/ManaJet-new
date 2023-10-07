@@ -3,7 +3,9 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <x-card title="All Users" tab1="<a href='{{route('users.create')}}' class='btn btn-primary '>Add New User</a>">
+            <x-card title="All Users" tab1="<a href='{{route('users.create')}}' class='btn btn-primary '>Add New User</a>"
+                classes="border border-info"
+                >
                 <div class="table-responsive">
 
                     <x-fancy-table>
@@ -11,44 +13,49 @@
                             <tr>
                                 <th class="text-center">#</th>
                                 <th>Title</th>
-                                <th class="text-center">User Name</th>
                                 <th class="text-center">Role</th>
                                 <th class="text-center">Email</th>
                                 <th class="text-center">Phone</th>
+                                <th class="text-center">Since</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </x-fancy-table-head>
 
                         <x-fancy-table-body>
+                            @php
+                            $i = isset($_GET['page']) ? intval($_GET['page']) : 0;
+                            $i++;
+                        @endphp
+                            @foreach ($users as $user)
+                                
                             <tr>
-                                <td class="text-center text-muted">#347</td>
+                                <td class="text-center text-muted">#{{$i}}</td>
                                 <td>
                                     <div class="widget-content p-0">
                                         <div class="widget-content-wrapper">
                                             <div class="widget-content-left mr-3">
                                                 <div class="widget-content-left">
                                                     <img width="40" class="rounded-circle"
-                                                        src="assets/images/avatars/3.jpg" alt="">
+                                                        src="{{asset($user->name)}}" alt="">
                                                 </div>
                                             </div>
                                             <div class="widget-content-left flex2">
-                                                <div class="widget-heading">Ruben Tillman</div>
+                                                <div class="widget-heading">{{$user->name}}</div>
                                             </div>
                                         </div>
                                     </div>
                                 </td>
-
-                                <td class="text-center">Berlin</td>
-
                                 <td class="text-center">
-                                    <div class="badge badge-info">Website Development</div>
+                                    <div class="badge badge-warning">{{$user->role->role_name}}</div>
                                 </td>
 
+                                <td class="text-center">{{$user->email}}</td> 
+
                                 <td class="text-center">
-                                    
+                                    {{$user->phone}}
                                 </td>
                                 <td class="text-center">
-                                    <div class="badge badge-success">Completed</div>
+                                    {{$user->created_at->diffForHumans()}}
                                 </td>
 
                                 <td class="text-center">
@@ -63,6 +70,10 @@
                                     </button>
                                 </td>
                             </tr>
+                            @php
+                                $i++
+                            @endphp
+                            @endforeach
                         </x-fancy-table-body>
                     </x-fancy-table>
                 </div>

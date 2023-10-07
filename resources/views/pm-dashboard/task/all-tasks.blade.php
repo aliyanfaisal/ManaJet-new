@@ -6,13 +6,13 @@
             @php
               $title= "All ".(isset($_GET['status']) ? $_GET['status'] : '')." Tasks";
             @endphp
-            <x-card :title="$title">
+            <x-card :title="$title" classes="border border-info">
                 <div class="row">
 
                     <div class="col-md-3">
                         <form class="needs-validation" novalidate="" method="post">
 
-                            <x-card title="Tasks expiring soon">
+                            <x-card title="Tasks expiring soon" classes="border border-info"    >
                                 
                             </x-card>
                         </form>

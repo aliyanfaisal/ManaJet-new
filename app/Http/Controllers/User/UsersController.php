@@ -18,7 +18,8 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return view("pm-dashboard.user.all-users");
+        $users= User::orderBy("id", "desc")->paginate(20);
+        return view("pm-dashboard.user.all-users", compact("users"));
     }
 
     /**

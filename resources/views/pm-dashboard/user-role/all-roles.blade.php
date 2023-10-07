@@ -3,14 +3,14 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <x-card title="All User Roles">
+            <x-card title="All User Roles" classes="border border-info">
                 <div class="row">
 
                     <div class="col-md-4">
                         <form class="needs-validation" novalidate="" method="post"
                             action="{{ route('user-roles.store') }}">
                             @csrf
-                            <x-card title="Add New Role">
+                            <x-card title="Add New Role" classes="border border-info">
                                 <div class="">
 
                                     <x-display-errors />
@@ -91,7 +91,7 @@
                                     <th class="text-center">#</th>
                                     <th>Role Name</th>
                                     <th class="">Parent Role</th>
-                                    <th class="">Description</th>
+                                    <th class="">Status</th>
                                     <th class="">Actions</th>
                                 </tr>
                             </x-fancy-table-head>
@@ -125,7 +125,7 @@
 
                                         <td class=" ">
                                             <div class="widget-subheading opacity-7">
-                                                {{ Illuminate\Support\Str::limit($role->role_description, 40) }}
+                                                <div class="badge badge-{{ ($role->status=='active') ? 'primary' : 'danger' }}">{{$role->status}}</div>
                                             </div>
                                         </td>
 

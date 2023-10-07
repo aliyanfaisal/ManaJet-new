@@ -12,7 +12,7 @@
 @section('content')
     <div class="container-fluid w-8">
         <div>
-            <x-card title="Edit a New Team">
+            <x-card title="Edit a New Team" tab1="<a href='{{route('teams.create')}}' class='btn btn-primary '>Add a Team</a>"  classes="border border-info">
 
                 <div class="container-fluid px-md-5">
 
@@ -24,7 +24,7 @@
                         <form autocomplete="false" class="col-md-6 order-md-2" method="post"
                             action="{{ route('teams.updateMembers', ['team' => $team->id]) }}">
                             @csrf
-                            <x-card :title="$team->team_name" classes="w-100 ">
+                            <x-card :title="$team->team_name" classes="w-100  border border-info">
                                 @if (Request::is('*/teams/create'))
                                     <div class="overlay-disable" style="">
                                         <h5><b>Add a Team first</b>.</h5>

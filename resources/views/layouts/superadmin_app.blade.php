@@ -32,7 +32,7 @@
 
             <div class="app-main__outer">
 
-                <div class="mt-4 px-4">
+                <div class="mt-4 px-md-4 px-1">
                     {{-- MAIN CONTENT HERE --}}
                     @yield('content')
                 </div>
