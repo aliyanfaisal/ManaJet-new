@@ -3,7 +3,8 @@
 @section('content')
     <div class="container-fluid w-8">
         <div>
-            <x-card title="Add a New User" tab1="<a href='{{route('users.index')}}' class='btn btn-primary '>All Users</a>" classes="border border-info">
+            <x-card title="Add a New User" tab1="<a href='{{ route('users.index') }}' class='btn btn-primary '>All Users</a>"
+                classes="border border-info">
 
                 <div class="container-fluid px-md-5">
 
@@ -15,14 +16,14 @@
 
                             <x-card title="User Preview" classes="border border-info">
                                 <div class="text-center">
-                                    <img class="m-auto" src="{{ asset('assets/images/logo.png') }}" alt="">
-                                    <b class="badge badge-info position-absolute"
-                                        style="left: 7px; top: 70px;  font-size: 18px;" id="preview_budget">80000PKR</b>
-                                    <h5 class="font-weight-bold my-3">Test User</h5>
+                                    <img class="m-auto" id="profile_picture_preview"
+                                        src="{{ asset('/assets/images/avatars/1.png') }}" width="200" alt="">
+                                    <h5 class="font-weight-bold my-3" id="name_preview">User Name</h5>
                                     <hr>
                                     <div class="d-flex justify-content-between">
-                                        <span><b class="badge badge-info" id="preview_cat">Website Development</b></span>
-                                        <span><b class="badge badge-warning" id="preview_team">Team 1</b></span>
+                                        <span><b class="badge badge-info fsize-1" id="role_id_preview">Website
+                                                Development</b></span>
+                                        <span><b class="badge badge-warning fsize-1" id="team_id_preview">Team 1</b></span>
                                     </div>
                                 </div>
                             </x-card>
@@ -41,7 +42,7 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="name">User Name</label>
                                         <input type="text" class="form-control" name="name" id="name"
-                                            placeholder="User Name" value="{{old('name')}}" required="">
+                                            placeholder="User Name" value="{{ old('name') }}" required="">
                                         <div class="invalid-feedback">
                                             User name is required.
                                         </div>
@@ -53,7 +54,8 @@
                                             required="">
                                             <option value="">Choose...</option>
                                             @foreach ($roles as $role)
-                                                <option @if(old('role_id')==$role->id) selected @endif value="{{ $role->id }}">{{ $role->role_name }}</option>
+                                                <option @if (old('role_id') == $role->id) selected @endif
+                                                    value="{{ $role->id }}">{{ $role->role_name }}</option>
                                             @endforeach
                                         </select>
                                         <div class="invalid-feedback">
@@ -71,7 +73,8 @@
 
                                         <label for="email">E-mail</label>
                                         <input type="email" class="form-control" id="email"
-                                            placeholder="A vaild Email" value="{{old('email')}}" name="email" required="">
+                                            placeholder="A vaild Email" value="{{ old('email') }}" name="email"
+                                            required="">
                                         <div class="invalid-feedback">
                                             Email field is required.
                                         </div>
@@ -79,9 +82,10 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="team_id">Team</label>
                                         <select name="team_id" class="custom-select d-block w-100" id="team_id">
-                                            <option  value="">Choose...</option> 
+                                            <option value="">Choose...</option>
                                             @foreach ($teams as $team)
-                                                <option @if(old('team_id')==$team->id) selected @endif value="{{ $team->id }}">{{ $team->team_name }}</option>
+                                                <option @if (old('team_id') == $team->id) selected @endif
+                                                    value="{{ $team->id }}">{{ $team->team_name }}</option>
                                             @endforeach
                                         </select>
                                         <div class="invalid-feedback">
@@ -95,8 +99,8 @@
 
                                     <div class="col-md-6 mb-3">
                                         <label for="phone">Phone</label>
-                                        <input type="phone" name="phone" class="form-control" id="phone" placeholder="Phone Number"
-                                            value="{{old('phone')}}" required="">
+                                        <input type="phone" name="phone" class="form-control" id="phone"
+                                            placeholder="Phone Number" value="{{ old('phone') }}" required="">
                                         <div class="invalid-feedback">
                                             Invalid Phone.
                                         </div>
@@ -145,5 +149,55 @@
                 });
             }, false);
         })();
+    </script>
+@endsection
+
+
+
+@section('js')
+    <script>
+        $(document).on("change", "input,select", function() {
+            changePreview($(this))
+        })
+
+
+        function changePreview($this) {
+
+            if ($this.attr("type") == "file") {
+                changeProfileImage($this)
+                return false
+            }
+
+            const $id = $this.attr("id")
+
+            var value = $this.val();
+
+            if ($id.includes("id")) {
+                value = $("#" + $id + " option[value='" + value + "']").html()
+
+            } else {
+
+            }
+
+            console.log("va;", value)
+
+            $("#" + $id + "_preview").html(value)
+
+        }
+
+
+        function changeProfileImage($this) {
+            
+            console.log("files", $this[0])
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+            
+                $("#"+$this.attr("id")+"_preview").attr("src",e.target.result)
+            };
+
+            reader.readAsDataURL($this[0].files[0]);
+
+        }
     </script>
 @endsection
