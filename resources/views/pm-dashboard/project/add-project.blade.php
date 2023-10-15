@@ -32,14 +32,14 @@
 
                             <div class="d-block my-3">
                                 <div class="custom-control custom-radio">
-                                    <input id="project_status" name="project_status" type="radio"
-                                        class="custom-control-input" checked="" required="">
-                                    <label class="custom-control-label" for="project_status">Publish</label>
+                                    <input id="project_condition" name="project_condition" type="radio"
+                                        class="custom-control-input" value="publish" checked="" required="">
+                                    <label class="custom-control-label"  for="project_condition">Publish</label>
                                 </div>
                                 <div class="custom-control custom-radio">
-                                    <input id="project_status" name="project_status" type="radio"
-                                        class="custom-control-input" required="">
-                                    <label class="custom-control-label" for="project_status">Draft</label>
+                                    <input id="project_condition" name="project_condition" type="radio"
+                                        class="custom-control-input" required="" value="draft">
+                                    <label class="custom-control-label" for="project_condition">Draft</label>
                                 </div>
                             </div>
                             <hr class="mb-4">
@@ -66,7 +66,7 @@
                                             id="project_category" required="">
                                             <option value="">Choose...</option>
                                             @foreach ($p_cats as $cat)
-                                                <option @selected(old('project_category'==$cat->id)) value="{{ $cat->id }}">{{ $cat->cat_name }}</option>
+                                                <option @selected(old('project_category')==$cat->id) value="{{ $cat->id }}">{{ $cat->cat_name }}</option>
                                             @endforeach
                                         </select>
                                         <div class="invalid-feedback">
@@ -83,7 +83,7 @@
                                     <div class="col-md-6 mb-3">
 
                                         <label for="budget">Project budget</label>
-                                        <input type="number" name="budget" class="form-control" value="0" id="budget"
+                                        <input type="number" name="budget" class="form-control" id="budget"
                                             placeholder="" value="{{old('budget')}}" required="">
                                         <div class="invalid-feedback">
                                             Budget field is required.
@@ -95,7 +95,7 @@
                                             required="">
                                             <option value="">Choose...</option>
                                             @foreach ($teams as $team)
-                                                <option @selected(old('team_id'==$team->id)) value="{{ $team->id }}">{{ $team->team_name }}</option>
+                                                <option @selected(old('team_id')==$team->id) value="{{ $team->id }}">{{ $team->team_name }}</option>
                                             @endforeach
                                         </select>
                                         <div class="invalid-feedback">

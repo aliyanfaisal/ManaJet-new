@@ -4,7 +4,7 @@
     <div class="container-fluid w-8">
         <div>
             <x-card title="<h4><b>{{$project->project_name}}</b></h4>"
-                tab1="<a href='{{route('project.destroy', ['project'=>$project->id])}}' class='btn btn-danger '>Delete Projects</a>"
+                tab1="<a href='{{route('project.destroy', ['project'=>$project->id])}}' class='btn btn-danger '>Delete Project</a>"
                  classes="border border-info">
 
                 <div class="container-fluid px-md-5">
@@ -34,14 +34,14 @@
 
                             <div class="d-block my-3">
                                 <div class="custom-control custom-radio">
-                                    <input id="project_status" name="project_status" type="radio"
-                                        class="custom-control-input" checked="" required="">
-                                    <label class="custom-control-label" for="project_status">Publish</label>
+                                    <input id="project_condition" name="project_condition" type="radio"
+                                        class="custom-control-input" value="publish" checked="" required="">
+                                    <label class="custom-control-label"  for="project_condition">Publish</label>
                                 </div>
                                 <div class="custom-control custom-radio">
-                                    <input id="project_status" name="project_status" type="radio"
-                                        class="custom-control-input" required="">
-                                    <label class="custom-control-label" for="project_status">Draft</label>
+                                    <input id="project_condition" name="project_condition" type="radio"
+                                        class="custom-control-input" required="" value="draft">
+                                    <label class="custom-control-label" for="project_condition">Draft</label>
                                 </div>
                             </div>
                             <hr class="mb-4">

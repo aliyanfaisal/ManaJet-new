@@ -36,7 +36,7 @@ class ProjectCategoriesController extends Controller
             [
                 "cat_name" => "required|unique:project_categories",
                 "parent_cat_id" => "nullable",
-                "cat_description" => "required",
+                "cat_description" => "nullable",
 
             ],
             [

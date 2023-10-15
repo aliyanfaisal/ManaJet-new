@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text("ticket_description")->nullable();
             $table->dateTime("ticket_deadline")->nullable();
 
-            $table->foreignId("reference_task_id")->references("id")->on("tasks")->onDelete("cascade")->nullable();
+            $table->foreignId("reference_task_id")->nullable()->references("id")->on("tasks")->nullOnDelete();
 
             $table->string("priority", 20);
             $table->string("status", 20);

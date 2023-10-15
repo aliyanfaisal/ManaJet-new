@@ -59,10 +59,10 @@
                                 </td>
 
                                 <td class="text-center">
-                                    <button type="button"
+                                    <a href="{{route('users.edit',$user->id)}}" type="button"
                                         class="btn btn-primary btn-sm">
                                         View
-                                    </button>
+                                    </a>
 
                                     <button type="button"
                                         class="btn btn-danger btn-sm">

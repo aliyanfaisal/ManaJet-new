@@ -16,8 +16,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        
-        return view("pm-dashboard.project.all-projects");
+        $projects= Project::orderBy("updated_at","desc")->paginate(20);
+        return view("pm-dashboard.project.all-projects",['projects'=>$projects]);
     }
 
     /**
@@ -39,7 +39,7 @@ class ProjectController extends Controller
             [
                 "project_name" => "required|unique:projects",
                 "project_category" => "required",
-                "project_status" => "required",
+                "project_condition" => "required",
                 "budget" => "required|numeric",
                 "team_id" => "required",
                 "project_image" => "nullable|image",

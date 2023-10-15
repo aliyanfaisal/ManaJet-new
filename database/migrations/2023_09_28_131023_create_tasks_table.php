@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text("task_description")->nullable();
             $table->dateTime("task_deadline")->nullable();
 
-            $table->foreignId("task_lead_id")->references("id")->on("users")->onDelete("cascade")->nullable();
+            $table->foreignId("task_lead_id")->nullable()->references("id")->on("users")->nullOnDelete();
 
             $table->string("priority", 20);
             $table->integer("task_step_no");

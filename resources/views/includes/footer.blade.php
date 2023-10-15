@@ -36,6 +36,8 @@
     </div>
 </div>
 </div>
+</div>
+</div>
 {{-- <script src="http://maps.google.com/maps/api/js?sensor=true"></script> --}}
 
 <script src="{{ asset('js/jquery.min.js') }}"></script>
@@ -49,6 +51,10 @@ $token = Session::get("user_token");
 </script>
 
 @include('includes.js-functions')
+
+@isset($use_bootstrap_js)
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+@endisset
 @yield('js')
 </body>
 

@@ -27,12 +27,12 @@
                     </x-stats-card>
                 </div>
                 <div class="d-xl-nones d-lg-block col-md-6 col-xl-4">
-                    <x-stats-card title="Total Income" sub_title='Last Month' number="$220" bg='bg-arielle-smile'>
+                    <x-stats-card title="Tasks Completed" sub_title='Today' number="$220" bg='bg-arielle-smile'>
 
                     </x-stats-card>
                 </div>
                 <div class="d-xl-nones d-lg-block col-md-6 col-xl-4">
-                    <x-stats-card title="Total Income" sub_title='Last Month' number="$220" bg=' bg-midnight-bloom'>
+                    <x-stats-card title="All Users" sub_title='Last Month' number="20" bg=' bg-midnight-bloom'>
 
                     </x-stats-card>
                 </div>
@@ -64,7 +64,7 @@
                                                                     src="assets/images/avatars/9.jpg" alt="">
                                                             </div>
                                                             <div class="widget-content-left">
-                                                                <div class="widget-heading">Ella-Rose Henry</div>
+                                                                <div class="widget-heading">Saira</div>
                                                                 <div class="widget-subheading">Web Developer</div>
                                                             </div>
                                                             <div class="widget-content-right">
@@ -87,7 +87,7 @@
                                                                     src="assets/images/avatars/5.jpg" alt="">
                                                             </div>
                                                             <div class="widget-content-left">
-                                                                <div class="widget-heading">Ruben Tillman</div>
+                                                                <div class="widget-heading">Aliyan Faisal</div>
                                                                 <div class="widget-subheading">UI Designer</div>
                                                             </div>
                                                             <div class="widget-content-right">
