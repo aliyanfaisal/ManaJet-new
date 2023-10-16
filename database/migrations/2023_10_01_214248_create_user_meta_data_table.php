@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_meta_data', function (Blueprint $table) {
+        Schema::create('user_profile', function (Blueprint $table) {
             $table->id();
         
             $table->foreignId("user_id")->references("id")->on("users")->onDelete("cascade");
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_meta_data');
+        Schema::dropIfExists('user_profile');
     }
 };

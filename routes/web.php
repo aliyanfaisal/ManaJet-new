@@ -73,6 +73,7 @@ Route::prefix("/pm/dashboard")->middleware("auth")->group(function(){
     Route::resource('tickets', TicketController::class);
 
     Route::resource("teams", TeamController::class);
+    
     Route::post("teams/{team}/update-members", [TeamController::class,"updateMembers"])->name("teams.updateMembers");
 
     Route::resource("users", UsersController::class);

@@ -3,10 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -45,9 +46,56 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function profile()
+    {
+        return $this->hasMany(UserProfile::class, "user_id", 'id');
+    }
+
+    public function profileData()
+    {
+
+        $data = [];
+        foreach ($this->profile as $p_data) {
+            $data[$p_data['meta_key']] = $p_data['meta_value'];
+        }
+
+        return $data;
+    }
+
+    public function profileImageUrl()
+    {
+        $path = "";
+        if (isset($this->profileData()['profile_picture'])) {
+            $path = $this->profileData()['profile_picture'];
+        } else {
+            $path = "default-user-profile.png";
+        }
 
 
-    public function role(){
-        return $this->belongsTo(Role::class);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+        return Storage::url($path);
+    }
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function teams()
+    {
+        return $this->hasMany(TeamUsers::class, "user_id", "id");
+    }
+
+    public function teamsIDs()
+    {
+        return TeamUsers::where("user_id", $this->id)->pluck("team_id");
+    }
+
+    public function belongsToTeam($team_id)
+    {
+        $team_user = TeamUsers::where("team_id", $team_id)->where("user_id", $this->id)->first();
+
+        if ($team_user) {
+            return true;
+        }
+        return false;
     }
 }

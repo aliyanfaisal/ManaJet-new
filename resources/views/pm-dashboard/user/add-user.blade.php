@@ -18,12 +18,11 @@
                                 <div class="text-center">
                                     <img class="m-auto" id="profile_picture_preview"
                                         src="{{ asset('/assets/images/avatars/1.png') }}" width="200" alt="">
-                                    <h5 class="font-weight-bold my-3" id="name_preview">User Name</h5>
+                                    <h5 class="font-weight-bold my-3" id="name_preview">.....</h5>
                                     <hr>
                                     <div class="d-flex justify-content-between">
-                                        <span><b class="badge badge-info fsize-1" id="role_id_preview">Website
-                                                Development</b></span>
-                                        <span><b class="badge badge-warning fsize-1" id="team_id_preview">Team 1</b></span>
+                                        <span><b class="badge badge-info fsize-1" id="role_id_preview">.....</b></span>
+                                        <span><b class="badge badge-warning fsize-1" id="team_id_preview">.....</b></span>
                                     </div>
                                 </div>
                             </x-card>
@@ -80,11 +79,11 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label for="team_id">Team</label>
-                                        <select name="team_id" class="custom-select d-block w-100" id="team_id">
+                                        <label for="team_ids">Team</label>
+                                        <select multiple name="team_ids[]" class="custom-select d-block w-100" id="team_ids">
                                             <option value="">Choose...</option>
                                             @foreach ($teams as $team)
-                                                <option @if (old('team_id') == $team->id) selected @endif
+                                                <option @if (old('team_ids') == $team->id) selected @endif
                                                     value="{{ $team->id }}">{{ $team->team_name }}</option>
                                             @endforeach
                                         </select>
