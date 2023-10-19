@@ -41,6 +41,7 @@
 {{-- <script src="http://maps.google.com/maps/api/js?sensor=true"></script> --}}
 
 <script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{asset('js/resource-control.js')}}"></script>
 <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
 @php
 $token = Session::get("user_token");
@@ -56,6 +57,7 @@ $token = Session::get("user_token");
 <script src="{{asset('js/bootstrap/bootstrap-js.js')}}"></script>
 @endisset
 @yield('js')
+
 </body>
 
 </html>

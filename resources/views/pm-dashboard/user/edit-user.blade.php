@@ -3,18 +3,22 @@
 @section('content')
     <div class="container-fluid w-8">
         <div>
-            <x-card title="Edit User" tab1="<a href='{{ route('users.index') }}' class='btn btn-primary '>All Users</a>"
+            <x-card title="Edit User " tab1="<button data-id='delete_user' class='btn btn-danger delete_res_btn'>Delete User</button>"
                 classes="border border-info">
 
                 <div class="container-fluid px-md-5">
+                   
+                    <x-resource-delete-btn :id="$user->id" idx="delete_user" resource="users" resourceSingle="user"/>
 
-
-                    <form class="needs-validation row" novalidate="" method="post" enctype="multipart/form-data"
-                        action="{{ route('users.update', ['user' => $user->id]) }}">
+                    <form autocomplete="off" class="needs-validation row" novalidate="" method="post"
+                        enctype="multipart/form-data" action="{{ route('users.update', ['user' => $user->id]) }}">
                         @csrf
+                        @method('put')
+
+                        <input type="text" hidden value="{{ $user->id }}" name="id">
                         <div class="col-md-4 order-md-2 mb-4">
 
-                            <x-card title="User Preview" classes="border border-info">
+                            <x-card :title="$user->name" classes="border border-info">
                                 <div class="text-center">
                                     <img class="m-auto" id="profile_picture_preview" src="{{ $user->profileImageUrl() }}"
                                         width="200" alt="">
@@ -36,11 +40,11 @@
 
                             <x-display-errors />
 
-                            <x-display-form-errors /> 
+                            <x-display-form-errors />
                             <div>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label for="name">User Name</label>
+                                        <label for="name " class="required">User Name</label>
                                         <input type="text" class="form-control" name="name" id="name"
                                             placeholder="User Name" value="{{ $user->name }}" required="">
                                         <div class="invalid-feedback">
@@ -49,7 +53,7 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
 
-                                        <label for="role_id">User Role</label>
+                                        <label for="role_id" class="required">User Role</label>
                                         <select class="custom-select d-block w-100" name="role_id" id="role_id"
                                             required="">
                                             <option value="">Choose...</option>
@@ -69,7 +73,7 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
 
-                                        <label for="email">E-mail</label>
+                                        <label for="email" class="required">E-mail</label>
                                         <input type="email" class="form-control" id="email"
                                             placeholder="A vaild Email" value="{{ $user->email }}" name="email"
                                             required="">
@@ -79,7 +83,7 @@
                                     </div>
 
                                     <div class="col-md-6 mb-3">
-                                        <label for="phone">Phone</label>
+                                        <label for="phone" class="required">Phone</label>
                                         <input type="phone" name="phone" class="form-control" id="phone"
                                             placeholder="Phone Number" value="{{ $user->phone }}" required="">
                                         <div class="invalid-feedback">
@@ -102,7 +106,9 @@
                                                     {{ $team->team_name }}</option>
                                             @endforeach
                                         </select>
-
+                                        <div class="text-muted">
+                                            Hold CTRL to select
+                                        </div>
                                         <input hidden type="text" name="old_team_ids"
                                             value="{{ $user->teamsIds()->toJson() }}">
                                         <div class="invalid-feedback">
@@ -121,6 +127,14 @@
 
                                 </div>
 
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="name " >Password</label>
+                                        <input type="pass" class="form-control" name="password" id="pass"
+                                            placeholder="Enter a Password to reset, otherwise leave empty" value="" >
+                                         
+                                    </div>
+                                </div>
 
 
                                 <hr class="mb-4">
@@ -128,7 +142,7 @@
                             </div>
                         </div>
                     </form>
-
+                    
                 </div>
 
             </x-card>

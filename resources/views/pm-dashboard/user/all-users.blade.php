@@ -3,9 +3,12 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <x-card title="All Users" tab1="<a href='{{route('users.create')}}' class='btn btn-primary '>Add New User</a>"
-                classes="border border-info"
-                >
+            <x-card title="All Users" tab1="<a href='{{ route('users.create') }}' class='btn btn-primary '>Add New User</a>"
+                classes="border border-info">
+                <x-display-errors />
+
+                <x-display-form-errors />
+                
                 <div class="table-responsive">
 
                     <x-fancy-table>
@@ -23,61 +26,65 @@
 
                         <x-fancy-table-body>
                             @php
-                            $i = isset($_GET['page']) ? intval($_GET['page']) : 0;
-                            $i++;
-                        @endphp
+                                $i = isset($_GET['page']) ? intval($_GET['page']) : 0;
+                                $i++;
+                            @endphp
                             @foreach ($users as $user)
-                                
-                            <tr>
-                                <td class="text-center text-muted">#{{$i}}</td>
-                                <td>
-                                    <div class="widget-content p-0">
-                                        <div class="widget-content-wrapper">
-                                            <div class="widget-content-left mr-3">
-                                                <div class="widget-content-left">
-                                                    <img width="40" class="rounded-circle"
-                                                        src="{{asset($user->name)}}" alt="">
+                                <tr>
+                                    <td class="text-center text-muted">#{{ $i }}</td>
+                                    <td>
+                                        <div class="widget-content p-0">
+                                            <div class="widget-content-wrapper">
+                                                <div class="widget-content-left mr-3">
+                                                    <div class="widget-content-left">
+                                                        <img width="40" class="rounded-circle"
+                                                            src="{{ $user->profileImageUrl() }}" alt="">
+                                                    </div>
+                                                </div>
+                                                <div class="widget-content-left flex2">
+                                                    <div class="widget-heading">{{ $user->name }}</div>
                                                 </div>
                                             </div>
-                                            <div class="widget-content-left flex2">
-                                                <div class="widget-heading">{{$user->name}}</div>
-                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <div class="badge badge-warning">{{$user->role->role_name}}</div>
-                                </td>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="badge badge-warning">{{ $user->role->role_name }}</div>
+                                    </td>
 
-                                <td class="text-center">{{$user->email}}</td> 
+                                    <td class="text-center">{{ $user->email }}</td>
 
-                                <td class="text-center">
-                                    {{$user->phone}}
-                                </td>
-                                <td class="text-center">
-                                    {{$user->created_at->diffForHumans()}}
-                                </td>
+                                    <td class="text-center">
+                                        {{ $user->phone }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ $user->created_at->diffForHumans() }}
+                                    </td>
 
-                                <td class="text-center">
-                                    <a href="{{route('users.edit',$user->id)}}" type="button"
-                                        class="btn btn-primary btn-sm">
-                                        View
-                                    </a>
+                                    <td class="text-center">
+                                        <a href="{{ route('users.edit', $user->id) }}" type="button"
+                                            class="btn btn-primary btn-sm">
+                                            View / Edit
+                                        </a>
 
-                                    <button type="button"
-                                        class="btn btn-danger btn-sm">
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                            @php
-                                $i++
-                            @endphp
+                                        @if ($user->role_id != 1)
+                                            <button type="button" class="btn btn-danger btn-sm">
+                                                Delete
+                                            </button>
+                                        @endif
+
+                                    </td>
+                                </tr>
+                                @php
+                                    $i++;
+                                @endphp
                             @endforeach
                         </x-fancy-table-body>
                     </x-fancy-table>
                 </div>
 
+                <div class="mt-3 px-md-5">
+                    {{ $users->links() }}
+                </div>
             </x-card>
         </div>
     </div>

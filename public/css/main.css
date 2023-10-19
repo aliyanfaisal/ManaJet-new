@@ -18,3 +18,10 @@
 
 
 
+label.required::after
+{
+    content: " *" !important;
+    font-weight: bold;
+    margin-left: 5px;
+    color: red !important; 
+}
