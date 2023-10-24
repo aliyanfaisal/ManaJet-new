@@ -12,7 +12,13 @@
             @php
                 $title = 'All Teams';
             @endphp
-            <x-card :title="$title" tab1="<a href='{{route('teams.create')}}' class='btn btn-primary '>Add a Team</a>" classes="border border-info">
+            <?php 
+            $tabb="";
+                if(Auth::user()->userCan('can_add_project')){  
+                    $tabb="<a href='".route('teams.create')."' class='btn btn-primary '>Add a Team</a>"; 
+                } 
+            ?>
+            <x-card :title="$title" :tab1="$tabb" classes="border border-info">
                 <div class="row">
 
                     @foreach ($teams as $team )
@@ -51,6 +57,11 @@
                     @endforeach
  
 
+                </div>
+
+                <div class="mt-3">
+                    {{$teams->links()}}
+                    
                 </div>
             </x-card>
         </div>

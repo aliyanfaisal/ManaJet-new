@@ -35,4 +35,10 @@ img.rounded-circle{
 
 .widget-content-left .widget-heading{
     text-transform: uppercase;
+    /* color:rgb(20,20,20) */
+}
+
+
+.modal{
+    background-color: rgba(0, 0, 0, 0.6);
 }

@@ -3,7 +3,13 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <x-card title="All Projects" tab1="<a href='{{route('project.create')}}' class='btn btn-primary '>Add a Project</a>"  classes="border border-info">
+            <?php 
+            $tabb="";
+                if(Auth::user()->userCan('can_add_project')){  
+                    $tabb="<a href='".route('project.create')."' class='btn btn-primary '>Add a Project</a>"; 
+                } 
+            ?>
+            <x-card title="All Projects"  :tab1="$tabb"  classes="border border-info">
                 <div class="table-responsive">
 
                     <x-fancy-table>
@@ -23,6 +29,8 @@
                             @php
                                 $i=1;
                             @endphp
+
+                            
                             @foreach ($projects as $project)
                             <tr>
                                 <td class="text-center text-muted">#{{$i}}</td>
@@ -63,10 +71,13 @@
                                         View/Edit
                                     </a>
 
+                                    @if(Auth::user()->userCan("can_add_project"))
                                     <button type="button"
                                         class="btn btn-danger btn-sm">
                                         Delete
                                     </button>
+
+                                    @endif
                                 </td>
                             </tr>       
                             @php
@@ -76,6 +87,11 @@
     
                         </x-fancy-table-body>
                     </x-fancy-table>
+
+                    <div class="mt-3">
+                        {{$projects->links()}}
+                        
+                    </div>
                 </div>
 
             </x-card>

@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Team;
 
 use App\Models\Task;
 use App\Models\Team;
-use App\Models\TeamUsers;
 use App\Models\User;
+use App\Models\TeamUsers;
 use Illuminate\Http\Request;
 use App\Models\ProjectCategories;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class TeamController extends Controller
 {
@@ -17,7 +18,12 @@ class TeamController extends Controller
      */
     public function index()
     {
-        $teams= Team::orderBy("id", "desc")->paginate(20);
+       
+        if(!Auth::user()->userCan("can_view_team") && !Auth::user()->isATeamLead()){
+            abort(403);
+        }
+
+        $teams= Team::orderBy("id", "desc")->paginate(10);
         return view("pm-dashboard.team.all-teams", compact("teams"));
     }
 
@@ -26,6 +32,11 @@ class TeamController extends Controller
      */
     public function create()
     {
+        if(!Auth::user()->userCan("can_add_team")){
+            abort(403);
+        }
+
+
         $p_cats = ProjectCategories::all();
         $users = User::all();
         return view("pm-dashboard.team.add-team", compact('p_cats', 'users'));
@@ -36,6 +47,10 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::user()->userCan("can_add_team")){
+            abort(403);
+        }
+
         $validated = $request->validate(
             [
                 "team_name" => "required|unique:teams,team_name",
@@ -55,6 +70,18 @@ class TeamController extends Controller
         );
 
         $team = Team::create($validated);
+        $tm = TeamUsers::create(
+                [
+                    "team_id" => $team->id,
+                    "user_id" => $validated['team_lead_id']
+                ]
+            );
+
+
+        $title="You are added as Team Lead  in Team ( {$team->team_name} )";
+        $content= "Manage your Team Now";
+
+        sendNotifcation($team->team_lead_id, $title, $content);
 
         return redirect()->route('teams.edit', ["team" => $team->id])->with(["message" => "Team added successfully", "result" => "success"]);
     }
@@ -72,6 +99,11 @@ class TeamController extends Controller
      */
     public function edit(string $id)
     {
+        if(!Auth::user()->userCan("can_add_team") && !Auth::user()->isATeamLead()){
+            abort(403);
+        }
+
+
         $p_cats = ProjectCategories::all();
         $users = User::all();
         $team = Team::findOrFail($id);
@@ -83,6 +115,11 @@ class TeamController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if(!Auth::user()->userCan("can_add_team") && !Auth::user()->isATeamLead()){
+            abort(403);
+        }
+
+
         $validated = $request->validate(
             [
                 "team_name" => "required",
@@ -118,7 +155,11 @@ class TeamController extends Controller
 
     public function updateMembers(Request $request, $team_id)
     {
+        if(!Auth::user()->userCan("can_view_team") && !Auth::user()->isATeamLead()){
+            abort(403);
+        }
 
+        
         $team_members = $request->team_members;
 
         if (!isset($team_members)) {

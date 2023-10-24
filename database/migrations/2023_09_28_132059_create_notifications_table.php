@@ -18,6 +18,8 @@ return new class extends Migration
             
             $table->foreignId("user_id")->references("id")->on("users")->onDelete("cascade")->nullable();
 
+            $table->boolean("seen")->default(0);
+            $table->string("link", 150)->nullable();
             $table->timestamps();
         });
     }

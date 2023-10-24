@@ -154,6 +154,11 @@
                                 @endforeach
                             </x-fancy-table-body>
                         </x-fancy-table>
+
+                        <div class="mt-3">
+                            {{$roles->links()}}
+                            
+                        </div>
                     </div>
 
 

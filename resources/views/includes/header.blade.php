@@ -1,7 +1,7 @@
 <div class="app-header header-shadow">
     <div class="app-header__logo">
         {{-- <div class="logo-src"></div> --}}
-        <img src="{{asset('assets/images/logo.png')}}" width="70">
+        <img src="{{asset('assets/images/logo.png')}}" width="90">
         <div class="header__pane ml-auto" id="afb-sidebar">
             <div>
                 <button type="button" class="hamburger afb-hamburger close-sidebar-btn hamburger--elastic"
@@ -34,24 +34,13 @@
     </div>
     <div class="app-header__content">
         <div class="app-header-left">
-            <div class="search-wrapper">
-                <div class="input-holder">
-                    <input type="text" class="search-input" placeholder="Type to search">
-                    <button class="search-icon"><span></span></button>
-                </div>
-                <button class="close"></button>
-            </div>
+            
             <ul class="header-menu nav">
-                <li class="nav-item">
-                    <a href="javascript:void(0);" class="nav-link">
-                        <i class="nav-link-icon fa fa-database"> </i>
-                        Statistics
-                    </a>
-                </li>
+                @if($authUser->userCan("can_manage_options"))
                 <li class="btn-group nav-item">
                     <a href="javascript:void(0);" class="nav-link">
                         <i class="nav-link-icon fa fa-edit"></i>
-                        Finance
+                        Reports
                     </a>
                 </li>
                 <li class="dropdown nav-item">
@@ -60,6 +49,7 @@
                         Settings
                     </a>
                 </li>
+                @endif
             </ul>
         </div>
         <div class="app-header-right">
@@ -78,10 +68,6 @@
                                     class="dropdown-menu dropdown-menu-right">
                                     <button type="button" tabindex="0" class="dropdown-item">User
                                         Account</button>
-                                    <button type="button" tabindex="0"
-                                        class="dropdown-item">Settings</button>
-                                    <h6 tabindex="-1" class="dropdown-header">Header</h6>
-                                    <button type="button" tabindex="0" class="dropdown-item">Actions</button>
                                     <div tabindex="-1" class="dropdown-divider"></div>
                                    
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST">

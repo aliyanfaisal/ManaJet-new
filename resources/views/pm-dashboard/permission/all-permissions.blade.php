@@ -15,9 +15,9 @@
                             <x-fancy-table-head>
                                 <tr>
                                     <th class="text-center">#</th>
-                                    <th>User Role</th>
+                                    <th>Parent User Role</th>
                                     <th class="">Permissions</th>
-                                    <th class="">Actions</th>
+                                    <th class="" style="min-width: 180px">Actions</th>
                                 </tr>
                             </x-fancy-table-head>
 
@@ -75,6 +75,12 @@
                                 @endforeach
                             </x-fancy-table-body>
                         </x-fancy-table>
+
+                        <div class="mt-3">
+                            {{$roles->links()}}
+                            
+                        </div>
+                        
                     </div>
 
 

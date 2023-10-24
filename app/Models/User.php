@@ -3,16 +3,19 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Team;
+use App\Models\TeamUsers;
+use App\Models\Permission;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable,SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -50,6 +53,38 @@ class User extends Authenticatable
     public function profile()
     {
         return $this->hasMany(UserProfile::class, "user_id", 'id');
+    }
+
+
+
+   public function userCan($permission)
+    {
+
+        $userPermissions = $this->role->permission_ids()->toArray();
+
+        $checkPermission = Permission::where("permission_name", $permission)->pluck("id")->toArray();
+    
+        
+        if (isset($checkPermission[0])) {
+
+            return in_array($checkPermission[0], $userPermissions);
+
+        }
+
+        return false;
+
+    }
+
+    public function isATeamLead()
+    {
+
+        $isTeamLead = Team::where("team_lead_id", $this->id)->first();
+
+        if ($isTeamLead) {
+            return true;
+        }
+
+        return false;
     }
 
     public function profileData()
@@ -98,5 +133,17 @@ class User extends Authenticatable
             return true;
         }
         return false;
+    }
+
+    public function belongsToProject($project_id){
+
+        $project= Project::findOrFail($project_id);
+        return $this->belongsToTeam($project->team_id);
+    }
+
+
+    public function isTeamLead( $team_id ){
+        $team= Team::findOrFail($team_id);
+        return in_array( $this->id,$team->getMemberIDs());
     }
 }

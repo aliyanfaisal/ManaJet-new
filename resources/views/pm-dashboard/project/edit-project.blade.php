@@ -1,11 +1,27 @@
 @extends('layouts.superadmin_app')
 
 @section('content')
+@if(!Auth::user()->userCan("can_add_project") &&  !Auth::user()->isTeamLead($project->team_id))
+<style>
+   input,select, textarea{
+      pointer-events: none;
+
+   }
+</style>
+@endif
+
+
     <div class="container-fluid w-8">
         <div>
+            @php 
+            $tabb="";
+            if(Auth::user()->userCan("can_add_project") || Auth::user()->isTeamLead($project->team_id))
+            {
+                $tabb="<a href='".route('project.destroy', ['project'=>$project->id])."' class='btn btn-danger '>Delete Project</a>";
+            }
+            @endphp            
             <x-card title="<h4><b>{{$project->project_name}}</b></h4>"
-                tab1="<a href='{{route('project.destroy', ['project'=>$project->id])}}' class='btn btn-danger '>Delete Project</a>"
-                 classes="border border-info">
+                :tab1="$tabb" classes="border border-info">
 
                 <div class="container-fluid px-md-5">
 
@@ -48,8 +64,10 @@
                                 </div>
                             </div>
                             <hr class="mb-4">
-                            <button class="btn btn-primary btn-lg btn-block" type="submit">Update Project</button>
 
+                            @if(Auth::user()->userCan("can_add_project") || Auth::user()->isTeamLead($project->team_id))
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Update Project</button>
+                            @endif
 
                         </div>
                         <div class="col-md-8 order-md-1"> 
@@ -141,75 +159,85 @@
 
 
                     <hr>
+                </div>
 
-                    @if(count($tasks)>0)
-                    <h5 class="mb-3">Project Tasks</h5>
+            </x-card>
 
-                    <div class="table-responsive">
 
-                        <x-fancy-table>
-                            <x-fancy-table-head>
-                                <tr>
-                                    <th class="text-center">#</th>
-                                    <th>Task Name</th>
-                                    {{-- <th class="text-center">Description</th> --}}
-                                    <th class="text-center">Priority</th>
-                                    <th class="text-center">Lead</th>
-                                    <th class="text-center">Deadline</th>
-                                    <th class="text-center">Status</th>
-                                    <th class="text-center">Actions</th>
-                                </tr>
-                            </x-fancy-table-head>
-    
-                            <x-fancy-table-body>
 
-                                @foreach($tasks as $task)
-                                <td>
-                                    <div class="widget-content p-0">
-                                        <div class="widget-content-wrapper">
-                                            <div class="widget-content-left mr-3">
-                                                <div class="widget-content-left">
-                                                    <img width="40" class="rounded-circle"
-                                                        src="{{ $project->projectImageUrl()}}" alt="">
-                                                </div>
+            @php 
+            $tabb="";
+            if(Auth::user()->userCan("can_add_project") || Auth::user()->isTeamLead($project->team_id))
+            {
+                $tabb="<a href='".route('tasks.create')."?project_id=$project->id' class='btn btn-primary'>Add Tasks</a>";
+            }
+            @endphp            
+            <x-card title="<h4><b>Project Tasks</b></h4>"
+                :tab1="$tabb" classes="border border-info">
+
+
+                <div class="table-responsive">
+
+                    <x-fancy-table>
+                        <x-fancy-table-head>
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th>Task Name</th>
+                                {{-- <th class="text-center">Description</th> --}}
+                                <th class="text-center">Priority</th>
+                                <th class="text-center">Lead</th>
+                                <th class="text-center">Deadline</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </x-fancy-table-head>
+
+                        <x-fancy-table-body>
+
+                            @foreach($tasks as $task)
+                            <td>
+                                <div class="widget-content p-0">
+                                    <div class="widget-content-wrapper">
+                                        <div class="widget-content-left mr-3">
+                                            <div class="widget-content-left">
+                                                <img width="40" class="rounded-circle"
+                                                    src="{{ $project->projectImageUrl()}}" alt="">
                                             </div>
-                                            <div class="widget-content-left flex2">
-                                                <div class="widget-heading"><a href="{{route('tasks.edit',$task->id)}}">{{$task->task_name}}</a></div>
-                                                <div class="widget-subheading opacity-7"> <b>{{Str::limit($task->task_description,20) }}</b>
-                                                </div>
+                                        </div>
+                                        <div class="widget-content-left flex2">
+                                            <div class="widget-heading"><a href="{{route('tasks.edit',$task->id)}}">{{$task->task_name}}</a></div>
+                                            <div class="widget-subheading opacity-7"> <b>{{Str::limit($task->task_description,20) }}</b>
                                             </div>
                                         </div>
                                     </div>
-                                </td>
+                                </div>
+                            </td>
 
-                                {{-- <td class="text-center">{{ $task}}</td> --}}
+                            {{-- <td class="text-center">{{ $task}}</td> --}}
 
-                                <td class="text-center">{{ $task->priority}}</td>
+                            <td class="text-center">{{ $task->priority}}</td>
 
-                                <td class="text-center">{{ $task->task_lead_id}}</td>
+                            <td class="text-center">{{ $task->task_lead_id}}</td>
 
-                                <td class="text-center">{{ $task->task_deadline}}</td>
+                            <td class="text-center">{{ $task->task_deadline}}</td>
 
-                                <td class="text-center">{{ $task->status}}</td>
+                            <td class="text-center">{{ $task->status}}</td>
 
-                                <td class="text-center">
-                                    <a href="{{route('project.edit',$project->id)}}" type="button"
-                                        class="btn btn-primary btn-sm">
-                                        View/Edit
-                                    </a>
+                            <td class="text-center">
+                                <a href="{{route('project.edit',$project->id)}}" type="button"
+                                    class="btn btn-primary btn-sm">
+                                    View/Edit
+                                </a>
 
-                                    <button type="button"
-                                        class="btn btn-danger btn-sm">
-                                        Delete
-                                    </button>
-                                </td>
+                                <button type="button"
+                                    class="btn btn-danger btn-sm">
+                                    Delete
+                                </button>
+                            </td>
 
-                                @endforeach
-                            </x-fancy-table-body>
-                        </x-fancy-table>
-                    </div>
-
-                    @endif
+                            @endforeach
+                        </x-fancy-table-body>
+                    </x-fancy-table>
                 </div>
 
             </x-card>

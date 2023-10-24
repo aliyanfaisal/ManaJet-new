@@ -25,6 +25,8 @@ use App\Http\Controllers\Project\ProjectCategoriesController;
 |
 */
 
+$route_prefix= "pm";
+
 
 Auth::routes();
 
@@ -33,14 +35,9 @@ Route::get('/home', function(){
 })->name('home');
 
 
-Route::get('/', function () {
-    return view("pm-dashboard.home");
-})->middleware("auth");
 
-
-include("project_manager_web.php");
-/// PROjeCT manAger routes
-Route::get('/dashboard', function (Request $request) {
+///  manAge routes
+Route::get('/', function (Request $request) {
     
     if(Auth::check()){
         $user= Auth::user();
@@ -61,7 +58,7 @@ Route::get('/dashboard', function (Request $request) {
 
 
 
-Route::prefix("/pm/dashboard")->middleware("auth")->group(function(){
+Route::prefix("/dashboard")->middleware("auth")->group(function(){
 
     Route::get("/", [DashboardController::class,"superDashboard"])->name("pm-dashboard");
 
@@ -84,6 +81,9 @@ Route::prefix("/pm/dashboard")->middleware("auth")->group(function(){
 
     Route::resource("permissions", PermissionController::class);
 });
+
+
+
 
 
 Route::prefix("/member/dashboard")->group(function(){

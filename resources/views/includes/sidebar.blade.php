@@ -41,7 +41,10 @@
                         Dashboard
                     </a>
                 </li>
+
+                @if($authUser->userCan("can_view_project"))
                 <li class="app-sidebar__heading">Projects</li>
+                
                 <li>
                     <a href="{{route('project.index')}}">
                         <i class="metismenu-icon pe-7s-diamond"></i>
@@ -49,6 +52,9 @@
                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                     </a>
                 </li>
+                @endif
+
+                @if($authUser->userCan("can_add_project"))
                 <li>
                     <a href="{{route('project.create')}}">
                         <i class="metismenu-icon pe-7s-car"></i>
@@ -56,16 +62,25 @@
                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                     </a>
                 </li>
+
+                @endif 
+
+                
+                @if($authUser->userCan("can_add_project_category"))
                 <li>
                     <a href="{{route("project-categories.index")}}">
                         <i class="metismenu-icon pe-7s-display2"></i>
                         Project Categories
                     </a>
                 </li>
+                @endif
 
 
+                
                 <li class="app-sidebar__heading">Tasks & Tickets</li>
+                
                 <li>
+                    @if($authUser->userCan("can_view_task"))
                     <a href="{{route("tasks.index", ['status'=>'pending'])}}">
                         <i class="metismenu-icon pe-7s-display2"></i>
                         On Going Tasks
@@ -74,55 +89,80 @@
                         <i class="metismenu-icon pe-7s-display2"></i>
                         Completed Tasks
                     </a>
+                    @endif 
 
+                    @if($authUser->userCan("can_view_ticket") || $authUser->isATeamLead())
                     <a href="{{route("tickets.index")}}">
                         <i class="metismenu-icon pe-7s-display2"></i>
                         Recent Tickets
                     </a>
+                    @endif
+
+
                     <a href="dashboard-boxes.html">
                         <i class="metismenu-icon pe-7s-display2"></i>
                         Details Board
                     </a>
 
                 </li>
+
+                @if($authUser->userCan("can_view_team") || $authUser->isATeamLead())
                 <li class="app-sidebar__heading">Teams</li>
+                @endif
                 <li>
+                    @if($authUser->userCan("can_view_team") || $authUser->isATeamLead())
                     <a href="{{route('teams.index')}}">
                         <i class="metismenu-icon pe-7s-mouse">
                         </i>All Teams
                     </a>
+                    @endif 
+
+                    @if($authUser->userCan("can_add_team"))
                     <a href="{{route('teams.create')}}">
                         <i class="metismenu-icon pe-7s-mouse">
                         </i>Add a Team
                     </a>
+                    @endif
                 </li>
+                @if($authUser->userCan("can_view_team") || $authUser->isATeamLead())
                 <li>
                     <a href="">
                         <i class="metismenu-icon pe-7s-eyedropper">
                         </i>Team Stats
                     </a>
                 </li>
-                <li class="app-sidebar__heading">Users</li>
+                @endif 
+
+                @if($authUser->userCan("can_add_user") || $authUser->userCan("can_add_permission"))
+                <li class="app-sidebar__heading">Users</li> 
+                @endif
                 <li>
+                    @if($authUser->userCan("can_add_user"))
                     <a href="{{route('users.index')}}">
                         <i class="metismenu-icon pe-7s-graph2">
                         </i>
                         All Users
                     </a>
+                    @endif
 
+                    @if($authUser->userCan("can_add_role"))
                     <a href="{{route('user-roles.index')}}">
                         <i class="metismenu-icon pe-7s-graph2">
                         </i>
                         User Roles
                     </a>
+                    @endif
+
+                    @if($authUser->userCan("can_add_permission"))
                     <a href="{{route('permissions.index')}}">
                         <i class="metismenu-icon pe-7s-graph2">
                         </i>
                         Permissions
                     </a>
+                    @endif
                 </li>
 
-
+                @if($authUser->userCan("can_manage_options"))
                 <li class="app-sidebar__heading">Settings</li>
                 <li>
                     <a href="charts-chartjs.html">
@@ -130,6 +170,7 @@
                         </i>Settings
                     </a>
                 </li>
+                @endif
             </ul>
         </div>
     </div>

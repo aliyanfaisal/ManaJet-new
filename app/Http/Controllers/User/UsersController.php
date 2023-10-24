@@ -11,6 +11,7 @@ use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use App\Models\ProjectCategories;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,6 +22,12 @@ class UsersController extends Controller
      */
     public function index()
     {
+
+        if(!Auth::user()->userCan("can_add_user")){
+            abort(403);
+        }
+
+        
         $users = User::orderBy("id", "desc")->paginate(10);
         return view("pm-dashboard.user.all-users", compact("users"));
     }
@@ -30,6 +37,10 @@ class UsersController extends Controller
      */
     public function create()
     {
+        if(!Auth::user()->userCan("can_add_user")){
+            abort(403);
+        }
+        
         $roles = Role::where("status", "active")->get();
         $teams = Team::all();
         return view("pm-dashboard.user.add-user", compact('roles', 'teams'));
@@ -40,7 +51,9 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-
+        if(!Auth::user()->userCan("can_add_user")){
+            abort(403);
+        }
 
         $validated = $request->validate(
             [
@@ -112,6 +125,10 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
+        if(!Auth::user()->userCan("can_add_user")){
+            abort(403);
+        }
+
         $roles = Role::where("status", "active")->get();
         $teams = Team::all();
         return view("pm-dashboard.user.edit-user", compact('user', "roles", 'teams'));
@@ -122,6 +139,11 @@ class UsersController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
+        if(!Auth::user()->userCan("can_add_user")){
+            abort(403);
+        }
+
         $validated = $request->validate(
             [
                 "id" => "required",
@@ -225,6 +247,11 @@ class UsersController extends Controller
      */
     public function destroy(string $id)
     {
+        if(!Auth::user()->userCan("can_add_user") ){
+            abort(403);
+        }
+
+
         $user= User::findOrFail($id);
         $user->delete();
 

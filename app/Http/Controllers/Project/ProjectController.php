@@ -9,6 +9,7 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Models\ProjectCategories;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
@@ -18,7 +19,19 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects= Project::orderBy("updated_at","desc")->paginate(20);
+        if(!Auth::user()->userCan("can_view_project")){
+            abort(403);
+        }
+
+        if(Auth::user()->userCan("can_add_project")){
+            $projects= Project::orderBy("updated_at","desc")->paginate(10);
+        }
+        else{
+            $projects= Project::whereIn("team_id", Auth::user()->teamsIDs())->orderBy("updated_at","desc")->paginate(10);
+        }
+
+        // dd(Auth::user()->teamsIDs());
+        
         return view("pm-dashboard.project.all-projects",['projects'=>$projects]);
     }
 
@@ -27,6 +40,10 @@ class ProjectController extends Controller
      */
     public function create()
     {
+        if(!Auth::user()->userCan("can_add_project") ){
+            abort(403);
+        }
+        
         $p_cats= ProjectCategories::select("id","cat_name")->get();
         $teams= Team::all();
         $tasks=[];
@@ -38,6 +55,11 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::user()->userCan("can_add_project")){
+            abort(403);
+        }
+
+
         $validated= $request->validate(
             [
                 "project_name" => "required|unique:projects",
@@ -86,6 +108,14 @@ class ProjectController extends Controller
         }
 
 
+        $team= Team::findOrFail($validated['team_id']);
+
+        $title="Your Team ( {$team->team_name} ) has been assigned a New Project";
+        $link= route("project.edit", ["project",$project->id]);
+        $content= "Please add Task and Assign to Users";
+
+        sendNotifcation($team->team_lead_id, $title, $content, $link);
+
         return redirect()->route("project.edit",['project'=>$project->id])->with(["message" => "Project added successfully", "result" => "success"]);
     }
 
@@ -102,9 +132,15 @@ class ProjectController extends Controller
      */
     public function edit(string $id)
     {
+        
+         if(!Auth::user()->userCan("can_add_project") && !Auth::user()->belongsToProject($id) ){
+            abort(403);
+        }
+
         $p_cats= ProjectCategories::select("id","cat_name")->get();
         $teams= Team::all();
         $project= Project::findOrFail($id);
+        
         $tasks= Task::where("project_id",$id)->get();
         return view("pm-dashboard.project.edit-project",compact("p_cats", 'teams','project','tasks'));
     }
@@ -114,6 +150,11 @@ class ProjectController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $project= Project::findOrFail($id);
+        if(!Auth::user()->userCan("can_add_project") &&  !Auth::user()->isTeamLead($project->team_id)){
+            abort(403);
+        }
+
         $validated= $request->validate(
             [
                 "project_name" => "required|unique:projects,project_name,$id",
@@ -140,7 +181,7 @@ class ProjectController extends Controller
         );
  
        
-        $project= Project::findOrFail($id);
+        
         $update = $project->update($validated);
 
         if($request->file("project_image")){
@@ -195,6 +236,11 @@ class ProjectController extends Controller
      */
     public function destroy(string $id)
     {
+        if(!Auth::user()->userCan("can_add_project")){
+            abort(403);
+        }
+
+
         echo "sdfg";
     }
 }

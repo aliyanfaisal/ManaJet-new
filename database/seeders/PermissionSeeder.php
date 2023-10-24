@@ -40,23 +40,23 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'can_view_project',
-                [1, 2, 3, 4, 5]
+                [1, 2, 3, 4, 5,8]
             ],
             [
                 'can_view_task',
-                [1, 2, 3, 4, 5]
+                [1, 2, 3, 4, 5,8]
             ],
             [
                 'can_view_ticket',
-                [1, 2, 3, 4, 5]
+                [1, 2, 3, 4, 5,8]
             ],
             [
                 'can_chat',
-                [1, 2, 3, 4, 5]
+                [1, 2, 3, 4, 5,8]
             ],
             [
                 'can_manage_profile',
-                [1, 2, 3, 4, 5]
+                [1, 2, 3, 4, 5,8]
             ],
             [
                 'can_add_role',
@@ -64,6 +64,18 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'can_add_project_category',
+                [1]
+            ],
+            [
+                'can_add_team',
+                [1]
+            ],
+            [
+                'can_view_team',
+                [1]
+            ],
+            [
+                'can_add_permission',
                 [1]
             ]
         ];

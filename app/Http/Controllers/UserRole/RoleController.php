@@ -6,6 +6,7 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Models\RolePermission;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class RoleController extends Controller
 {
@@ -13,7 +14,11 @@ class RoleController extends Controller
     public function index()
     {
 
-        $roles = Role::orderBy("id", "desc")->paginate(20);
+        if(!Auth::user()->userCan("can_add_role") ){
+            abort(403);
+        }
+
+        $roles = Role::orderBy("id", "desc")->paginate(10);
 
         return view("pm-dashboard.user-role.all-roles", compact("roles"));
     }
@@ -21,7 +26,9 @@ class RoleController extends Controller
 
     public function store(Request $request)
     {
-
+        if(!Auth::user()->userCan("can_add_role") ){
+            abort(403);
+        }
 
         if (isset($request->id)) {
             return $this->update($request);
@@ -60,7 +67,9 @@ class RoleController extends Controller
 
     public function update(Request $request)
     {
-
+        if(!Auth::user()->userCan("can_add_role") ){
+            abort(403);
+        }
         $validated = $request->validate(
             [
                 'id' => "required",

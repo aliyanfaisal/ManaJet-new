@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en">
-
+@php
+$authUser= Auth::user();
+@endphp
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

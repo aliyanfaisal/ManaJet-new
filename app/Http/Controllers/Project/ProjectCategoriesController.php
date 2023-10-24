@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Project;
 
-use App\Http\Controllers\Controller;
-use App\Models\ProjectCategories;
 use Illuminate\Http\Request;
+use App\Models\ProjectCategories;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectCategoriesController extends Controller
 {
@@ -13,7 +14,11 @@ class ProjectCategoriesController extends Controller
      */
     public function index()
     {
-        $p_cats = ProjectCategories::orderBy("id", "desc")->paginate(20);
+        if(!Auth::user()->userCan("can_add_project_category")){
+            abort(403);
+        }
+
+        $p_cats = ProjectCategories::orderBy("id", "desc")->paginate(10);
         return view("pm-dashboard.project.all-project-categories", compact("p_cats"));
     }
 
@@ -30,11 +35,14 @@ class ProjectCategoriesController extends Controller
      */
     public function store(Request $request)
     {
-
+        if(!Auth::user()->userCan("can_add_project_category")){
+            abort(403);
+        }
+        
         $post = $request->post();
-        $request->validate(
+        $validate= $request->validate(
             [
-                "cat_name" => "required|unique:project_categories",
+                "cat_name" => "required|unique:project_categories,cat_name".(isset($request->id) ? ",".$request->id : ""),
                 "parent_cat_id" => "nullable",
                 "cat_description" => "nullable",
 
@@ -48,6 +56,13 @@ class ProjectCategoriesController extends Controller
         );
 
         unset($post['_token']);
+
+        if(isset($request->id)){
+            $p_cat= ProjectCategories::findOrFail($request->id);
+            $p_cat->update($validate);
+            return redirect()->back()->with(["message" => "Category Updated successfully", "result" => "success"]);
+        }
+
         $p_cat = ProjectCategories::create($post);
 
         return redirect()->back()->with(["message" => "Category added successfully", "result" => "success"]);
