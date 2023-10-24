@@ -69,7 +69,7 @@ class Project extends Model
     }
 
     public function team(){
-        return $this->belongsTo(Team::class,"project_category","id");
+        return $this->belongsTo(Team::class,"team_id","id");
     }
 
     public function projectImage(){

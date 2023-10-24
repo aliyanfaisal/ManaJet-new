@@ -4,33 +4,36 @@ namespace App\Http\Controllers\UserRole;
 
 use App\Models\Role;
 use Illuminate\Http\Request;
+use App\Models\RolePermission;
 use App\Http\Controllers\Controller;
 
 class RoleController extends Controller
 {
-     
-    public function index(){
 
-        $roles= Role::orderBy("id", "desc")->paginate(20);
+    public function index()
+    {
 
-        return view("pm-dashboard.user-role.all-roles" , compact("roles"));
+        $roles = Role::orderBy("id", "desc")->paginate(20);
+
+        return view("pm-dashboard.user-role.all-roles", compact("roles"));
     }
 
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
 
-        if(isset($request->id)){
+        if (isset($request->id)) {
             return $this->update($request);
         }
 
-        $validated= $request->validate(
+        $validated = $request->validate(
             [
-                'id'=>"nullable",
+                'id' => "nullable",
                 "role_name" => "required|unique:roles",
                 "parent_id" => "nullable",
                 "role_description" => "nullable",
-                "status"=>"nullable"
+                "status" => "nullable"
 
             ],
             [
@@ -40,21 +43,31 @@ class RoleController extends Controller
 
         );
 
-    
-        $role= Role::create($validated);
+
+        $role = Role::create($validated);
+
+        $default_permissions = config("default_permissions", [7, 8, 9, 10, 11]);
+        foreach ($default_permissions as $per) {
+            RolePermission::create([
+                "role_id" => $role->id,
+                "permission_id" => $per
+            ]);
+        }
+
 
         return redirect()->back()->with(["message" => "Role added successfully", "result" => "success"]);
     }
 
-    public function update( Request $request){
+    public function update(Request $request)
+    {
 
-        $validated= $request->validate(
+        $validated = $request->validate(
             [
-                'id'=>"required",
+                'id' => "required",
                 "role_name" => "required",
                 "parent_id" => "nullable",
                 "role_description" => "nullable",
-                "status"=>"nullable"
+                "status" => "nullable"
 
             ],
             [
@@ -63,9 +76,9 @@ class RoleController extends Controller
             ]
 
         );
-        
-        $role= Role::findOrFail($validated['id']);
-        $role= $role->update($validated);
+
+        $role = Role::findOrFail($validated['id']);
+        $role = $role->update($validated);
         return redirect()->back()->with(["message" => "Role updated successfully", "result" => "success"]);
     }
 }

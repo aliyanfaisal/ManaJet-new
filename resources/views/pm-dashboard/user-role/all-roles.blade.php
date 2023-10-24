@@ -162,7 +162,7 @@
         </div>
     </div>
 
-    <div class="modal" tabindex="-1" id="edit_form_modal"   style="top: 60px">
+    <div class="modal" tabindex="-1" id="edit_form_modal" data-bs-backdrop="false"  style="top: 60px">
         <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">

@@ -14,17 +14,20 @@
                     <x-display-form-errors />
                     <form enctype="multipart/form-data" autocomplete="off" class="needs-validation row" novalidate="" method="post" action="{{ route('project.update', ['project'=>$project->id]) }}">
                         @csrf
-                        <div class="col-md-4 order-md-2 mb-4">
+
+                        @method("PUT")
+                        <div class="col-md-4 order-md-2 mb-4"> 
+
                             <x-card title="Project Preview" classes="border border-info">
                                 <div class="text-center">
-                                    <img class="m-auto" src="{{ $project->projectImageUrl()}}" alt="">
+                                    <img style="max-width: 400px" id="project_image_preview" class="m-auto" src="{{ $project->projectImageUrl()}}" alt="">
                                     <b class="badge badge-info position-absolute"
-                                        style="left: 7px; top: 70px;  font-size: 20px;" id="preview_budget">{{$project->budget.env("CURRENCY_SYMBOL",'PKR')}}</b>
-                                    <h5 class="font-weight-bold my-3">{{$project->project_name}}</h5>
+                                        style="left: 7px; top: 70px;  font-size: 20px;" > <span id="budget_preview">{{$project->budget}}</span> {{env("CURRENCY_SYMBOL",'PKR')}}</b>
+                                    <h5 class="font-weight-bold my-3" id="project_name_preview" style="text-transform: capitalize">{{$project->project_name}}</h5>
                                     <hr>
                                     <div class="d-flex justify-content-between">
-                                        <span><b class="badge badge-info fsize-1" id="preview_cat">{{$project->category->cat_name}}</b></span>
-                                        <span><b class="badge badge-warning fsize-1" id="preview_team">{{$project->team->team_name}}</b></span>
+                                        <span><b class="badge badge-info fsize-1" id="project_category_preview">{{$project->category->cat_name}}</b></span>
+                                        <span><b class="badge badge-warning fsize-1" id="team_id_preview">{{$project->team->team_name}}</b></span>
                                     </div>
                                 </div>
                             </x-card>
@@ -35,12 +38,12 @@
                             <div class="d-block my-3">
                                 <div class="custom-control custom-radio">
                                     <input id="project_condition" name="project_condition" type="radio"
-                                        class="custom-control-input" value="publish" checked="" required="">
+                                        class="custom-control-input" @checked( $project->condition=="publish" ) value="publish" checked="" required="">
                                     <label class="custom-control-label"  for="project_condition">Publish</label>
                                 </div>
                                 <div class="custom-control custom-radio">
                                     <input id="project_condition" name="project_condition" type="radio"
-                                        class="custom-control-input" required="" value="draft">
+                                        class="custom-control-input" @checked( $project->condition=="draft" ) required="" value="draft">
                                     <label class="custom-control-label" for="project_condition">Draft</label>
                                 </div>
                             </div>
@@ -51,6 +54,9 @@
                         </div>
                         <div class="col-md-8 order-md-1"> 
                             <div>
+                                <h5 class="mb-1">Project Progress</h5>
+                                <x-progress-card  value="{{$project->progress()['progress_percentage']}}" color="{{$project->progress()['status_color']}}" showCard="false"/>
+                                <hr>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="project_name">Project Name</label>
@@ -111,13 +117,14 @@
                                         <label for="project_image">Project Image</label>
                                         <input type="file" class=" form-control-file " name="project_image"
                                             id="project_image">
+
                                         <div class="invalid-feedback">
                                             Invalid Image.
                                         </div>
-                                        <hr>
+                                        
                                     </div>
                                 </div>
-
+                                <hr>
                                 <div class="mb-3">
                                     <label for="project_description">Project Description</label>
                                     <textarea rows="7" class="form-control" name="project_description" id="project_description"
@@ -132,6 +139,77 @@
                         </div>
                     </form>
 
+
+                    <hr>
+
+                    @if(count($tasks)>0)
+                    <h5 class="mb-3">Project Tasks</h5>
+
+                    <div class="table-responsive">
+
+                        <x-fancy-table>
+                            <x-fancy-table-head>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th>Task Name</th>
+                                    {{-- <th class="text-center">Description</th> --}}
+                                    <th class="text-center">Priority</th>
+                                    <th class="text-center">Lead</th>
+                                    <th class="text-center">Deadline</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </x-fancy-table-head>
+    
+                            <x-fancy-table-body>
+
+                                @foreach($tasks as $task)
+                                <td>
+                                    <div class="widget-content p-0">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left mr-3">
+                                                <div class="widget-content-left">
+                                                    <img width="40" class="rounded-circle"
+                                                        src="{{ $project->projectImageUrl()}}" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="widget-content-left flex2">
+                                                <div class="widget-heading"><a href="{{route('tasks.edit',$task->id)}}">{{$task->task_name}}</a></div>
+                                                <div class="widget-subheading opacity-7"> <b>{{Str::limit($task->task_description,20) }}</b>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                {{-- <td class="text-center">{{ $task}}</td> --}}
+
+                                <td class="text-center">{{ $task->priority}}</td>
+
+                                <td class="text-center">{{ $task->task_lead_id}}</td>
+
+                                <td class="text-center">{{ $task->task_deadline}}</td>
+
+                                <td class="text-center">{{ $task->status}}</td>
+
+                                <td class="text-center">
+                                    <a href="{{route('project.edit',$project->id)}}" type="button"
+                                        class="btn btn-primary btn-sm">
+                                        View/Edit
+                                    </a>
+
+                                    <button type="button"
+                                        class="btn btn-danger btn-sm">
+                                        Delete
+                                    </button>
+                                </td>
+
+                                @endforeach
+                            </x-fancy-table-body>
+                        </x-fancy-table>
+                    </div>
+
+                    @endif
                 </div>
 
             </x-card>
@@ -157,5 +235,66 @@
                 });
             }, false);
         })();
+    </script>
+@endsection
+
+
+
+
+
+
+@section('js')
+
+    <script>
+        $(document).on("keyup", "input,select", function() {
+            console.log("chnaging")
+            changePreview($(this))
+        })
+
+        $(document).on("change", "input,select", function() {
+           
+            changePreview($(this))
+        })
+
+
+        function changePreview($this) {
+
+            if ($this.attr("type") == "file") {
+               
+                changeProfileImage($this)
+                return false
+            }
+
+            const $id = $this.attr("id")
+
+            var value = $this.val();
+
+            if ($id.includes("project_category") || $id.includes("team")) {
+                value = $("#" + $id + " option[value='" + value + "']").html()
+
+            } else {
+
+            }
+
+            console.log("va;", value, $id)
+
+            $("#" + $id + "_preview").html(value)
+
+        }
+
+
+        function changeProfileImage($this) {
+            
+            console.log("files", $this[0])
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+            
+                $("#"+$this.attr("id")+"_preview").attr("src",e.target.result)
+            };
+
+            reader.readAsDataURL($this[0].files[0]);
+
+        } 
     </script>
 @endsection

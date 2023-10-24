@@ -15,14 +15,14 @@
                         <div class="col-md-4 order-md-2 mb-4">
                             <x-card title="Project Preview" classes="border border-info">
                                 <div class="text-center">
-                                    <img class="m-auto" src="{{ asset('assets/images/logo.png') }}" alt="">
+                                    <img class="m-auto" id="project_image_preview" src="{{ asset('assets/images/logo.png') }}" alt="">
                                     <b class="badge badge-info position-absolute"
-                                        style="left: 7px; top: 70px;  font-size: 20px;" id="preview_budget">80000PKR</b>
-                                    <h5 class="font-weight-bold my-3">Test Project</h5>
+                                        style="left: 7px; top: 70px;  font-size: 20px;" ><span id="budget_preview">---</span> {{env("CURRENCY_SYMBOL",'PKR')}}</b>
+                                    <h5 class="font-weight-bold my-3" style="text-transform: capitalize" id="project_name_preview">--------</h5>
                                     <hr>
                                     <div class="d-flex justify-content-between">
-                                        <span><b class="badge badge-info fsize-1" id="preview_cat">Website Development</b></span>
-                                        <span><b class="badge badge-warning fsize-1"  id="preview_team">Team 1</b></span>
+                                        <span><b class="badge badge-info fsize-1" id="project_category_preview">------</b></span>
+                                        <span><b class="badge badge-warning fsize-1"  id="team_id_preview">---</b></span>
                                     </div>
                                 </div>
                             </x-card>
@@ -32,14 +32,14 @@
 
                             <div class="d-block my-3">
                                 <div class="custom-control custom-radio">
-                                    <input id="project_condition" name="project_condition" type="radio"
+                                    <input id="project_condition_1" name="project_condition" type="radio"
                                         class="custom-control-input" value="publish" checked="" required="">
-                                    <label class="custom-control-label"  for="project_condition">Publish</label>
+                                    <label class="custom-control-label"  for="project_condition_1">Publish</label>
                                 </div>
                                 <div class="custom-control custom-radio">
-                                    <input id="project_condition" name="project_condition" type="radio"
+                                    <input id="project_condition_2" name="project_condition" type="radio"
                                         class="custom-control-input" required="" value="draft">
-                                    <label class="custom-control-label" for="project_condition">Draft</label>
+                                    <label class="custom-control-label" for="project_condition_2">Draft</label>
                                 </div>
                             </div>
                             <hr class="mb-4">
@@ -156,5 +156,64 @@
                 });
             }, false);
         })();
+    </script>
+@endsection
+
+
+
+
+@section('js')
+
+    <script>
+        $(document).on("keyup", "input,select", function() {
+            console.log("chnaging")
+            changePreview($(this))
+        })
+
+        $(document).on("change", "input,select", function() {
+           
+            changePreview($(this))
+        })
+
+
+        function changePreview($this) {
+
+            if ($this.attr("type") == "file") {
+               
+                changeProfileImage($this)
+                return false
+            }
+
+            const $id = $this.attr("id")
+
+            var value = $this.val();
+
+            if ($id.includes("project_category") || $id.includes("team")) {
+                value = $("#" + $id + " option[value='" + value + "']").html()
+
+            } else {
+
+            }
+
+            console.log("va;", value, $id)
+
+            $("#" + $id + "_preview").html(value)
+
+        }
+
+
+        function changeProfileImage($this) {
+            
+            console.log("files", $this[0])
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+            
+                $("#"+$this.attr("id")+"_preview").attr("src",e.target.result)
+            };
+
+            reader.readAsDataURL($this[0].files[0]);
+
+        } 
     </script>
 @endsection

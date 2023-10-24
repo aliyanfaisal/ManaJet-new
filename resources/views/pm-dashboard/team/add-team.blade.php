@@ -140,10 +140,3 @@
     </script>
 @endsection
 
-
-@section('js')
-
-    <script>
-
-    </script>
-@endsection

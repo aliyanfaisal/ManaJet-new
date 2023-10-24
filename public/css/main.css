@@ -25,3 +25,14 @@ label.required::after
     margin-left: 5px;
     color: red !important; 
 }
+
+img.rounded-circle{
+    min-width: 40px;
+    min-height: 40px;
+    object-fit: cover;
+}
+
+
+.widget-content-left .widget-heading{
+    text-transform: uppercase;
+}

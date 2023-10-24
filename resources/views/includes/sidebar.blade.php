@@ -115,7 +115,7 @@
                         </i>
                         User Roles
                     </a>
-                    <a href="charts-chartjs.html">
+                    <a href="{{route('permissions.index')}}">
                         <i class="metismenu-icon pe-7s-graph2">
                         </i>
                         Permissions

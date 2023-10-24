@@ -1,17 +1,18 @@
 <?php
 
 
-use App\Http\Controllers\UserRole\RoleController;
-use App\Http\Controllers\User\UsersController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\Task\TaskController;
+use App\Http\Controllers\Team\TeamController;
+use App\Http\Controllers\User\UsersController;
 use App\Http\Controllers\Ticket\TicketController;
+use App\Http\Controllers\UserRole\RoleController;
 use App\Http\Controllers\Project\ProjectController;
 use App\Http\Controllers\dashboard\DashboardController;
+use App\Http\Controllers\Permission\PermissionController;
 use App\Http\Controllers\Project\ProjectCategoriesController;
-use App\Http\Controllers\Team\TeamController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +80,9 @@ Route::prefix("/pm/dashboard")->middleware("auth")->group(function(){
     Route::resource("users", UsersController::class);
 
     Route::resource("user-roles", RoleController::class);
+
+
+    Route::resource("permissions", PermissionController::class);
 });
 
 

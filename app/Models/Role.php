@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Permission;
+use App\Models\RolePermission;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Role extends Model
 {
@@ -21,4 +23,37 @@ class Role extends Model
             return false;
         }
     }
+
+    public function permissions(){
+        $parent_id= $this->parentRole();
+
+        if($parent_id){
+            $role_id= $parent_id->id;
+        }
+        else{
+            $role_id= $this->id;
+        }
+
+        return  $permissions = RolePermission::where('role_id', $role_id)
+                        ->leftJoin('permissions', 'role_permissions.permission_id', '=', 'permissions.id')
+                        ->get();
+    }
+
+
+    public function permission_ids(){
+        $parent_id= $this->parentRole();
+
+        if($parent_id){
+            $role_id= $parent_id->id;
+        }
+        else{
+            $role_id= $this->id;
+        }
+
+
+        return  $permissions = RolePermission::where('role_id', $role_id)
+                        ->leftJoin('permissions', 'role_permissions.permission_id', '=', 'permissions.id')
+                        ->pluck("permission_id");
+    }
+    
 }
