@@ -167,7 +167,7 @@
 
             @php 
             $tabb="";
-            if(Auth::user()->userCan("can_add_project") || Auth::user()->isTeamLead($project->team_id))
+            if(Auth::user()->userCan("can_add_tasks") || Auth::user()->isTeamLead($project->team_id))
             {
                 $tabb="<a href='".route('tasks.create')."?project_id=$project->id' class='btn btn-primary'>Add Tasks</a>";
             }

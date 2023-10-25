@@ -82,4 +82,6 @@ class Project extends Model
 
         return Storage::url($path);
     }
+
+
 }

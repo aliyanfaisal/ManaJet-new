@@ -23,9 +23,9 @@ return new class extends Migration
             $table->foreignId("task_lead_id")->nullable()->references("id")->on("users")->nullOnDelete();
 
             $table->string("priority", 20);
-            $table->integer("task_step_no");
+            $table->integer("task_step_no")->nullable();
 
-            $table->string("status", 20);
+            $table->string("status", 20)->default("pending");
 
             $table->boolean("has_attachments")->default(0);
             

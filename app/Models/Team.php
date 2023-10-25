@@ -30,7 +30,11 @@ class Team extends Model
 
     public function members()
     {
-        return $this->hasMany(TeamUsers::class, "team_id", "id");
+        return $this->hasMany(TeamUsers::class);
+    }
+
+    public function membersData(){
+        return $this->belongsToMany(User::class,"team_users","team_id","user_id");
     }
 
     public function getMemberIDs()

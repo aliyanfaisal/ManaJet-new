@@ -159,9 +159,9 @@ class TeamController extends Controller
             abort(403);
         }
 
-        
+        $team= Team::findOrFail($team_id);
         $team_members = $request->team_members;
-
+        $team_members[]= $team->team_lead_id;
         if (!isset($team_members)) {
             $team_members = [];
         }
@@ -200,7 +200,7 @@ class TeamController extends Controller
             if ($userExists) {
                 continue;
             }
-
+           
             $tm = TeamUsers::create(
                 [
                     "team_id" => $team_id,
