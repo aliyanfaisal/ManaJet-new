@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Task;
 
 use App\Models\Task;
+use App\Models\Option;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use OpenAI\Laravel\Facades\OpenAI;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use \Mastashake\LaravelOpenaiApi\LaravelOpenaiApi; 
 
 class TaskController extends Controller
 {
@@ -33,7 +36,21 @@ class TaskController extends Controller
         $project = Project::findOrFail($project_id);
         $team_members = $project->team->membersData;
 
-        return view("pm-dashboard.task.add-task", compact("project", "team_members"));
+        $tasks= Task::where("project_id",$project->id)->paginate(10);
+
+        
+        $generated_tasks=  Option::where("option_key","project_".($project->id)."_generated_tasks")->orderBy("id","desc")->first();
+       
+        if($generated_tasks!=null){
+            $generated_tasks= ($generated_tasks->option_value);
+        }
+        else{
+            $generated_tasks="";
+        }
+        
+
+        return view("pm-dashboard.task.add-task", compact("project", "team_members","tasks", "generated_tasks"));
+
     }
 
     /**
@@ -46,7 +63,7 @@ class TaskController extends Controller
         }
 
         $project = Project::findOrFail($request->project_id);
-        if (!Auth::user()->userCan("can_add_tasks") && !Auth::user()->isTeamLead($project->team_id)) {
+        if (!Auth::user()->userCan("can_add_task") && !Auth::user()->isTeamLead($project->team_id)) {
             abort(403);
         }
 
@@ -133,5 +150,59 @@ class TaskController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+
+    public function getTasksGPT(Request $request){
+        
+        if(!isset($request->project)){
+            return false;
+        }
+
+        $request->project= (object) $request->project;
+     
+        $result = OpenAI::completions()->create([
+            'model' => 'text-davinci-003',
+            "prompt" => "Act as a Project Lead in an IT company. Project name is '{$request->project->project_name}' and Category is {$request->project->project_category} and Description is {$request->project->project_description}. Write Tasks for this project with task_name,task_description,days_needed,priority as high,low,medium. Follow Agile Method. Return this data only and in Json format like this [{ \"task_name\": .... },{....}]. Hints: {$request->hints} ",
+            "n" => 1,
+            "max_tokens" => 1600
+        ]);
+
+        $res=  $result['choices'][0]['text'];
+   
+
+        // $res= '[{ "task_name": "Project Planning","task_description": "Plan the scope and timeline of the project","days_needed": 5, "priority": "High"},
+        // { "task_name": "Register Domain Name","task_description": "Register a domain name for project website","days_needed": 1, "priority": "Low"},
+        // { "task_name": "Design Website","task_description": "Design and plan the front-end user interface of the website","days_needed": 7, "priority": "Medium"},
+        // { "task_name": "Develop Website","task_description": "Write programms and HTML to bring the planned design to life","days_needed": 15, "priority": "High"},
+        // { "task_name": "Test Website","task_description": "Test the website to ensure smooth operation","days_needed": 5, "priority": "Medium"},
+        // { "task_name": "Deploy Website","task_description": "Publish website and make it publicly available","days_needed": 2, "priority": "High"}]
+        // ';
+
+        Option::create([
+            "option_key"=>"project_".($request->project->id)."_generated_tasks",
+            "option_value"=> ($res),
+            "active"=> true
+        ]);
+
+        echo ($res);
+        die();
+    }
+
+
+    public function addAllTasks(Request $request){
+        
+        if(isset($request['all_tasks'])){
+
+            $tasks=($request['all_tasks']);
+
+            foreach($tasks as $task){
+
+                $task= (array) $task;
+                // $task['']
+
+                // $tk = Task::create($task);
+            }
+        }
     }
 }

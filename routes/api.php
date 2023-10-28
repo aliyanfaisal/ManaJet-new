@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\User\UsersController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Task\TaskController;
+use App\Http\Controllers\User\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +26,6 @@ Route::middleware("auth:sanctum")->group(function(){
 
     Route::get("/get/users", [UsersController::class, "getUsers" ]);
 
+    Route::post("/get-tasks-gpt",[TaskController::class,"getTasksGPT"])->name("get-tasks-gpt");
 });
+

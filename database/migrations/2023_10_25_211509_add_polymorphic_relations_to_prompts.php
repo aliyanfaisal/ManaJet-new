@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('options', function (Blueprint $table) {
-            $table->id();
-            $table->string("option_key",150);
-            $table->text("option_value")->nullable();
-            $table->string("active",20)->default("active");
-            $table->timestamps();
+        Schema::table('prompts', function (Blueprint $table) {
+          $table->unsignedBigInteger('user_id')->nullable();
+          $table->string('user_type')->nullable();
         });
     }
 
@@ -25,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('options');
+
     }
 };

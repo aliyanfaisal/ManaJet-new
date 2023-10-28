@@ -28,6 +28,3 @@ $token = Session::get("user_token");
 @endisset
 @yield('js')
 
-</body>
-
-</html>

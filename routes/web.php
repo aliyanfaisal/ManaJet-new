@@ -67,6 +67,7 @@ Route::prefix("/dashboard")->middleware("auth")->group(function(){
     Route::resource('project-categories', ProjectCategoriesController::class);
 
     Route::resource('tasks', TaskController::class);
+    Route::post("/tasks/add-all",[TaskController::class,"addAllTasks"])->name("tasks.add_all");
 
     Route::resource('tickets', TicketController::class);
 
@@ -80,6 +81,8 @@ Route::prefix("/dashboard")->middleware("auth")->group(function(){
 
 
     Route::resource("permissions", PermissionController::class);
+
+
 });
 
 

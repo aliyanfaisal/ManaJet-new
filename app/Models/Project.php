@@ -83,5 +83,15 @@ class Project extends Model
         return Storage::url($path);
     }
 
+    public function hasTask($task_name){
+        $task= Task::where("project_id",$this->id)->where("task_name", $task_name)->first();
+
+        if($task!=null){
+            return true;
+        }
+
+        return false;
+    }
+
 
 }

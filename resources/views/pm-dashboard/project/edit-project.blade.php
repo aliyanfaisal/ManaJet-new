@@ -1,49 +1,56 @@
 @extends('layouts.superadmin_app')
 
 @section('content')
-@if(!Auth::user()->userCan("can_add_project") &&  !Auth::user()->isTeamLead($project->team_id))
-<style>
-   input,select, textarea{
-      pointer-events: none;
+    @if (!Auth::user()->userCan('can_add_project') && !Auth::user()->isTeamLead($project->team_id))
+        <style>
+            input,
+            select,
+            textarea {
+                pointer-events: none;
 
-   }
-</style>
-@endif
+            }
+        </style>
+    @endif
 
 
     <div class="container-fluid w-8">
         <div>
-            @php 
-            $tabb="";
-            if(Auth::user()->userCan("can_add_project") || Auth::user()->isTeamLead($project->team_id))
-            {
-                $tabb="<a href='".route('project.destroy', ['project'=>$project->id])."' class='btn btn-danger '>Delete Project</a>";
-            }
-            @endphp            
-            <x-card title="<h4><b>{{$project->project_name}}</b></h4>"
-                :tab1="$tabb" classes="border border-info">
+            @php
+                $tabb = '';
+                if (Auth::user()->userCan('can_add_project') || Auth::user()->isTeamLead($project->team_id)) {
+                    $tabb = "<a href='" . route('project.destroy', ['project' => $project->id]) . "' class='btn btn-danger '>Delete Project</a>";
+                }
+            @endphp
+            <x-card title="<h4><b>{{ $project->project_name }}</b></h4>" :tab1="$tabb" classes="border border-info">
 
-                <div class="container-fluid px-md-5">
+                <div class=" px-md-5">
 
                     <x-display-errors />
 
                     <x-display-form-errors />
-                    <form enctype="multipart/form-data" autocomplete="off" class="needs-validation row" novalidate="" method="post" action="{{ route('project.update', ['project'=>$project->id]) }}">
+                    <form enctype="multipart/form-data" autocomplete="off" class="needs-validation row" novalidate=""
+                        method="post" action="{{ route('project.update', ['project' => $project->id]) }}">
                         @csrf
 
-                        @method("PUT")
-                        <div class="col-md-4 order-md-2 mb-4"> 
+                        @method('PUT')
+                        <div class="col-md-4 order-md-2 mb-4">
 
                             <x-card title="Project Preview" classes="border border-info">
                                 <div class="text-center">
-                                    <img style="max-width: 400px" id="project_image_preview" class="m-auto" src="{{ $project->projectImageUrl()}}" alt="">
+                                    <img style="max-width: 400px" id="project_image_preview" class="m-auto"
+                                        src="{{ $project->projectImageUrl() }}" alt="">
                                     <b class="badge badge-info position-absolute"
-                                        style="left: 7px; top: 70px;  font-size: 20px;" > <span id="budget_preview">{{$project->budget}}</span> {{env("CURRENCY_SYMBOL",'PKR')}}</b>
-                                    <h5 class="font-weight-bold my-3" id="project_name_preview" style="text-transform: capitalize">{{$project->project_name}}</h5>
+                                        style="left: 7px; top: 70px;  font-size: 20px;"> <span
+                                            id="budget_preview">{{ $project->budget }}</span>
+                                        {{ env('CURRENCY_SYMBOL', 'PKR') }}</b>
+                                    <h5 class="font-weight-bold my-3" id="project_name_preview"
+                                        style="text-transform: capitalize">{{ $project->project_name }}</h5>
                                     <hr>
                                     <div class="d-flex justify-content-between">
-                                        <span><b class="badge badge-info fsize-1" id="project_category_preview">{{$project->category->cat_name}}</b></span>
-                                        <span><b class="badge badge-warning fsize-1" id="team_id_preview">{{$project->team->team_name}}</b></span>
+                                        <span><b class="badge badge-info fsize-1"
+                                                id="project_category_preview">{{ $project->category->cat_name }}</b></span>
+                                        <span><b class="badge badge-warning fsize-1"
+                                                id="team_id_preview">{{ $project->team->team_name }}</b></span>
                                     </div>
                                 </div>
                             </x-card>
@@ -54,32 +61,36 @@
                             <div class="d-block my-3">
                                 <div class="custom-control custom-radio">
                                     <input id="project_condition" name="project_condition" type="radio"
-                                        class="custom-control-input" @checked( $project->condition=="publish" ) value="publish" checked="" required="">
-                                    <label class="custom-control-label"  for="project_condition">Publish</label>
+                                        class="custom-control-input" @checked($project->condition == 'publish') value="publish"
+                                        checked="" required="">
+                                    <label class="custom-control-label" for="project_condition">Publish</label>
                                 </div>
                                 <div class="custom-control custom-radio">
                                     <input id="project_condition" name="project_condition" type="radio"
-                                        class="custom-control-input" @checked( $project->condition=="draft" ) required="" value="draft">
+                                        class="custom-control-input" @checked($project->condition == 'draft') required=""
+                                        value="draft">
                                     <label class="custom-control-label" for="project_condition">Draft</label>
                                 </div>
                             </div>
                             <hr class="mb-4">
 
-                            @if(Auth::user()->userCan("can_add_project") || Auth::user()->isTeamLead($project->team_id))
-                            <button class="btn btn-primary btn-lg btn-block" type="submit">Update Project</button>
+                            @if (Auth::user()->userCan('can_add_project') || Auth::user()->isTeamLead($project->team_id))
+                                <button class="btn btn-primary btn-lg btn-block" type="submit">Update Project</button>
                             @endif
 
                         </div>
-                        <div class="col-md-8 order-md-1"> 
+                        <div class="col-md-8 order-md-1">
                             <div>
                                 <h5 class="mb-1">Project Progress</h5>
-                                <x-progress-card  value="{{$project->progress()['progress_percentage']}}" color="{{$project->progress()['status_color']}}" showCard="false"/>
+                                <x-progress-card value="{{ $project->progress()['progress_percentage'] }}"
+                                    color="{{ $project->progress()['status_color'] }}" showCard="false" />
                                 <hr>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="project_name">Project Name</label>
                                         <input type="text" class="form-control" name="project_name" id="project_name"
-                                            placeholder="Project Title" value="{{$project->project_name}}" required="">
+                                            placeholder="Project Title" value="{{ $project->project_name }}"
+                                            required="">
                                         <div class="invalid-feedback">
                                             Project name is required.
                                         </div>
@@ -91,7 +102,8 @@
                                             id="project_category" required="">
                                             <option value="">Choose...</option>
                                             @foreach ($p_cats as $cat)
-                                                <option @selected($project->project_category==$cat->id) value="{{ $cat->id }}">{{ $cat->cat_name }}</option>
+                                                <option @selected($project->project_category == $cat->id) value="{{ $cat->id }}">
+                                                    {{ $cat->cat_name }}</option>
                                             @endforeach
                                         </select>
                                         <div class="invalid-feedback">
@@ -108,8 +120,8 @@
                                     <div class="col-md-6 mb-3">
 
                                         <label for="budget">Project budget</label>
-                                        <input type="number" name="budget" class="form-control"  id="budget"
-                                            placeholder="" value="{{intval($project->budget)}}" required="">
+                                        <input type="number" name="budget" class="form-control" id="budget"
+                                            placeholder="" value="{{ intval($project->budget) }}" required="">
                                         <div class="invalid-feedback">
                                             Budget field is required.
                                         </div>
@@ -120,7 +132,8 @@
                                             required="">
                                             <option value="">Choose...</option>
                                             @foreach ($teams as $team)
-                                                <option @selected($project->team_id==$team->id) value="{{ $team->id }}">{{ $team->team_name }}</option>
+                                                <option @selected($project->team_id == $team->id) value="{{ $team->id }}">
+                                                    {{ $team->team_name }}</option>
                                             @endforeach
                                         </select>
                                         <div class="invalid-feedback">
@@ -139,14 +152,14 @@
                                         <div class="invalid-feedback">
                                             Invalid Image.
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="mb-3">
                                     <label for="project_description">Project Description</label>
                                     <textarea rows="7" class="form-control" name="project_description" id="project_description"
-                                        placeholder="Summary of the project" required="">{{$project->project_description}}</textarea>
+                                        placeholder="Summary of the project" required="">{{ $project->project_description }}</textarea>
                                     <div class="invalid-feedback">
                                         Invalid description.
                                     </div>
@@ -163,17 +176,18 @@
 
             </x-card>
 
+        </div>
+    </div>
 
-
-            @php 
-            $tabb="";
-            if(Auth::user()->userCan("can_add_tasks") || Auth::user()->isTeamLead($project->team_id))
-            {
-                $tabb="<a href='".route('tasks.create')."?project_id=$project->id' class='btn btn-primary'>Add Tasks</a>";
-            }
-            @endphp            
-            <x-card title="<h4><b>Project Tasks</b></h4>"
-                :tab1="$tabb" classes="border border-info">
+    <div class="container-fluid w-8">
+        <div>
+            @php
+                $tabb = '';
+                if (Auth::user()->userCan('can_add_task') || Auth::user()->isTeamLead($project->team_id)) {
+                    $tabb = "<a href='" . route('tasks.create') . "?project_id=$project->id' class='btn btn-primary'>Add Tasks</a>";
+                }
+            @endphp
+            <x-card title="<h4><b>Project Tasks</b></h4>" :tab1="$tabb" classes="border border-info">
 
 
                 <div class="table-responsive">
@@ -186,7 +200,7 @@
                                 {{-- <th class="text-center">Description</th> --}}
                                 <th class="text-center">Priority</th>
                                 <th class="text-center">Lead</th>
-                                <th class="text-center">Deadline</th>
+                                <th class="text-center">Days Left</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Actions</th>
                             </tr>
@@ -194,55 +208,79 @@
 
                         <x-fancy-table-body>
 
-                            @foreach($tasks as $task)
-                            <td>
-                                <div class="widget-content p-0">
-                                    <div class="widget-content-wrapper">
-                                        <div class="widget-content-left mr-3">
-                                            <div class="widget-content-left">
-                                                <img width="40" class="rounded-circle"
-                                                    src="{{ $project->projectImageUrl()}}" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="widget-content-left flex2">
-                                            <div class="widget-heading"><a href="{{route('tasks.edit',$task->id)}}">{{$task->task_name}}</a></div>
-                                            <div class="widget-subheading opacity-7"> <b>{{Str::limit($task->task_description,20) }}</b>
+                            @php
+                            $i=1;
+                            @endphp
+                            @foreach ($tasks as $task)
+                            <tr>
+                                <td class="text-center">{{ $i }}</td>
+                                <td>
+                                    <div class="widget-content p-0">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left flex2">
+                                                <div class="widget-heading"><a
+                                                        href="{{ route('tasks.edit', $task->id) }}">{{ $task->task_name }}</a>
+                                                </div>
+                                                <div class="widget-subheading opacity-7">
+                                                    <b>{{ Str::limit($task->task_description, 20) }}</b>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
+                                </td>
 
-                            {{-- <td class="text-center">{{ $task}}</td> --}}
+                                {{-- <td class="text-center">{{ $task}}</td> --}}
 
-                            <td class="text-center">{{ $task->priority}}</td>
+                                <td class="text-center">
+                                    <div class="badge badge-info">{{ $task->priority }}</div>
+                                </td>
 
-                            <td class="text-center">{{ $task->task_lead_id}}</td>
+                                <td class="text-center">{{ $task->teamLead->name }}</td>
 
-                            <td class="text-center">{{ $task->task_deadline}}</td>
+                                @php
+                                $now= new DateTime();
+                                $then= new DateTime($task->task_deadline);
+                            
+                                $interval = $then->diff($now);
+                                
+                                @endphp
+                                <td class="text-center text-underline">
+                                    <div class="badge badge-secondary">{{ $interval->days }} Day(s)</div>
+                                    </td>
 
-                            <td class="text-center">{{ $task->status}}</td>
+                                <td class="text-center">
+                                    <div class="badge badge-@if( $task->status=='complete'){{'success'}} @else{{'warning'}} @endif">{{ $task->status }}</div>
+                                </td>
 
-                            <td class="text-center">
-                                <a href="{{route('project.edit',$project->id)}}" type="button"
-                                    class="btn btn-primary btn-sm">
-                                    View/Edit
-                                </a>
+                                <td class="text-center">
+                                    <a href="{{ route('tasks.edit', $project->id) }}" type="button"
+                                        class="btn btn-primary btn-sm">
+                                        View/Edit
+                                    </a>
 
-                                <button type="button"
-                                    class="btn btn-danger btn-sm">
-                                    Delete
-                                </button>
-                            </td>
+                                    <button type="button" class="btn btn-danger btn-sm">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
 
+                                    @php
+                                    $i++;
+                                    @endphp
                             @endforeach
                         </x-fancy-table-body>
                     </x-fancy-table>
+
+                    <div>
+                        {{$tasks->links()}}
+                    </div>
                 </div>
 
             </x-card>
         </div>
     </div>
+
+
 
     <script>
         // Example starter JavaScript for disabling form submissions if there are invalid fields
@@ -272,7 +310,6 @@
 
 
 @section('js')
-
     <script>
         $(document).on("keyup", "input,select", function() {
             console.log("chnaging")
@@ -280,7 +317,7 @@
         })
 
         $(document).on("change", "input,select", function() {
-           
+
             changePreview($(this))
         })
 
@@ -288,7 +325,7 @@
         function changePreview($this) {
 
             if ($this.attr("type") == "file") {
-               
+
                 changeProfileImage($this)
                 return false
             }
@@ -312,17 +349,17 @@
 
 
         function changeProfileImage($this) {
-            
+
             console.log("files", $this[0])
             var reader = new FileReader();
 
             reader.onload = function(e) {
-            
-                $("#"+$this.attr("id")+"_preview").attr("src",e.target.result)
+
+                $("#" + $this.attr("id") + "_preview").attr("src", e.target.result)
             };
 
             reader.readAsDataURL($this[0].files[0]);
 
-        } 
+        }
     </script>
 @endsection

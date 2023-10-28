@@ -141,7 +141,7 @@ class ProjectController extends Controller
         $teams= Team::all();
         $project= Project::findOrFail($id);
         
-        $tasks= Task::where("project_id",$id)->get();
+        $tasks= Task::where("project_id",$id)->paginate(10);
         return view("pm-dashboard.project.edit-project",compact("p_cats", 'teams','project','tasks'));
     }
 

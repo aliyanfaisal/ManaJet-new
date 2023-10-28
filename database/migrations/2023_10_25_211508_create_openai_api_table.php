@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('options', function (Blueprint $table) {
+        Schema::create('prompts', function (Blueprint $table) {
             $table->id();
-            $table->string("option_key",150);
-            $table->text("option_value")->nullable();
-            $table->string("active",20)->default("active");
+            $table->string('prompt_text');
+            $table->json('data');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('options');
+        Schema::dropIfExists('prompts');
     }
 };
