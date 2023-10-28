@@ -36,7 +36,7 @@
             <ul class="vertical-nav-menu">
                 <li class="app-sidebar__heading">Dashboards</li>
                 <li>
-                    <a href="{{route('dashboard')}}" class="mm-active">
+                    <a href="{{route('dashboard')}}" class="@if(route('dashboard')) mm-active @endif">
                         <i class="metismenu-icon pe-7s-rocket"></i>
                         Dashboard
                     </a>

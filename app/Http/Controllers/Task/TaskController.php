@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Task;
 
+use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\Option;
 use App\Models\Project;
@@ -9,7 +10,7 @@ use Illuminate\Http\Request;
 use OpenAI\Laravel\Facades\OpenAI;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use \Mastashake\LaravelOpenaiApi\LaravelOpenaiApi; 
+use \Mastashake\LaravelOpenaiApi\LaravelOpenaiApi;
 
 class TaskController extends Controller
 {
@@ -19,7 +20,16 @@ class TaskController extends Controller
     public function index()
     {
 
-        return view("pm-dashboard.task.all-tasks");
+        $status = $_GET['status'] ?? "pending";
+        $tasks = Task::where("status", $status)->orderBy("id", "desc")->paginate(10, ['*'], 'paginateTaskList');
+
+
+        $expiringToday = Task::whereDate("task_deadline", Carbon::today())->paginate(10, ['*'], 'paginateExpiringTasks');
+
+        $tasks->appends(['status' => $status]);
+        $expiringToday->appends(['status' => $status]);
+
+        return view("pm-dashboard.task.all-tasks", compact("tasks", "expiringToday"));
     }
 
     /**
@@ -36,20 +46,19 @@ class TaskController extends Controller
         $project = Project::findOrFail($project_id);
         $team_members = $project->team->membersData;
 
-        $tasks= Task::where("project_id",$project->id)->paginate(10);
+        $tasks = Task::where("project_id", $project->id)->orderBy("task_step_no", "desc")->paginate(10);
 
-        
-        $generated_tasks=  Option::where("option_key","project_".($project->id)."_generated_tasks")->orderBy("id","desc")->first();
-       
-        if($generated_tasks!=null){
-            $generated_tasks= ($generated_tasks->option_value);
-        }
-        else{
-            $generated_tasks="";
-        }
-        
 
-        return view("pm-dashboard.task.add-task", compact("project", "team_members","tasks", "generated_tasks"));
+        $generated_tasks = Option::where("option_key", "project_" . ($project->id) . "_generated_tasks")->orderBy("id", "desc")->first();
+
+        if ($generated_tasks != null) {
+            $generated_tasks = ($generated_tasks->option_value);
+        } else {
+            $generated_tasks = "";
+        }
+
+
+        return view("pm-dashboard.task.add-task", compact("project", "team_members", "tasks", "generated_tasks"));
 
     }
 
@@ -75,7 +84,7 @@ class TaskController extends Controller
                 'task_deadline' => "required",
                 'priority' => "required",
                 'task_step_no' => "nullable",
-                "project_id"=>"required"
+                "project_id" => "required"
 
             ],
             [
@@ -101,22 +110,21 @@ class TaskController extends Controller
         } else {
             $step_no = intval($validated['task_step_no']);
 
-            $all_tasks_after_this= Task::where("project_id",$request->project_id)->where("task_step_no",">=",$step_no)->get();
-            
-            if(!$all_tasks_after_this->isEmpty()){
-                foreach($all_tasks_after_this as $task){
-                    $task= Task::findOrFail($task->id);
-                    $task->task_step_no= ++$step_no;
+            $all_tasks_after_this = Task::where("project_id", $request->project_id)->where("task_step_no", ">=", $step_no)->get();
+
+            if (!$all_tasks_after_this->isEmpty()) {
+                foreach ($all_tasks_after_this as $task) {
+                    $task = Task::findOrFail($task->id);
+                    $task->task_step_no = ++$step_no;
                     $task->save();
                 }
             }
 
         }
 
-        $validated['status']="pending";
-        $task = Task::create($validated);
+        $task = Task::update($validated);
 
-        return redirect()->route("tasks.create",['project_id'=>$request->project_id])->with(['message' => 'Task Added Successfully!', 'result' => 'success']);
+        return redirect()->route("tasks.create", ['project_id' => $request->project_id])->with(['message' => 'Task Added Successfully!', 'result' => 'success']);
 
     }
 
@@ -133,7 +141,11 @@ class TaskController extends Controller
      */
     public function edit(string $id)
     {
-        //
+
+        $task = Task::findOrFail($id);
+        $team_members = $task->project->team->membersData;
+
+        return view("pm-dashboard/task/edit-task", compact("task", 'team_members'));
     }
 
     /**
@@ -141,7 +153,72 @@ class TaskController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
+        $task = Task::findOrFail($id);
+        $request->project_id = $task->project->id;
+        $project = Project::findOrFail($request->project_id);
+
+        if (!Auth::user()->userCan("can_add_task") && !Auth::user()->isTeamLead($project->team_id)) {
+            abort(403);
+        }
+
+        $validated = $request->validate(
+            [
+                "task_name" => "required|unique:tasks,task_name,$id",
+                "task_lead_id" => "required",
+                'task_description' => "required",
+                'task_deadline' => "required",
+                'priority' => "required",
+                'task_step_no' => "nullable",
+
+            ],
+            [
+                "task_name.required" => "Task Name is required",
+                "task_name.unique" => strtoupper($request->task_name) . " is already added",
+                "task_description.required" => "Task description is required",
+                "task_lead_id.required" => "Team Lead is required",
+                "budget.numeric" => "task budget must be a number",
+                "priority.required" => "You must select a Priority",
+            ]
+
+        );
+
+
+
+
+        if ($validated['task_step_no'] == null) {
+            $last_no = Task::where("project_id", $request->project_id)->where("id", "!=", $id)->orderBy("task_step_no", "desc")->first();
+
+
+            if ($last_no !== null) {
+                $last_no = intval($last_no->task_step_no);
+                $validated['task_step_no'] = $last_no + 1;
+            } else {
+                $validated['task_step_no'] = 1;
+            }
+
+        } else {
+            $step_no = intval($validated['task_step_no']);
+
+            $all_tasks_after_this = Task::where("project_id", $request->project_id)
+                ->where("id", "!=", $id)
+                ->where("task_step_no", ">=", $step_no)
+                ->orderBy("task_step_no", "asc")->get();
+
+            if (!$all_tasks_after_this->isEmpty()) {
+                foreach ($all_tasks_after_this as $task) {
+                    $task = Task::findOrFail($task->id);
+                    $task->task_step_no = ++$step_no;
+                    $task->save();
+                }
+            }
+
+        }
+
+        $task->update($validated);
+    
+        return redirect()->back()->with(['message' => 'Task Updated Successfully!', 'result' => 'success']);
+
     }
 
     /**
@@ -153,14 +230,15 @@ class TaskController extends Controller
     }
 
 
-    public function getTasksGPT(Request $request){
-        
-        if(!isset($request->project)){
+    public function getTasksGPT(Request $request)
+    {
+
+        if (!isset($request->project)) {
             return false;
         }
 
-        $request->project= (object) $request->project;
-     
+        $request->project = (object) $request->project;
+
         $result = OpenAI::completions()->create([
             'model' => 'text-davinci-003',
             "prompt" => "Act as a Project Lead in an IT company. Project name is '{$request->project->project_name}' and Category is {$request->project->project_category} and Description is {$request->project->project_description}. Write Tasks for this project with task_name,task_description,days_needed,priority as high,low,medium. Follow Agile Method. Return this data only and in Json format like this [{ \"task_name\": .... },{....}]. Hints: {$request->hints} ",
@@ -168,8 +246,8 @@ class TaskController extends Controller
             "max_tokens" => 1600
         ]);
 
-        $res=  $result['choices'][0]['text'];
-   
+        $res = $result['choices'][0]['text'];
+
 
         // $res= '[{ "task_name": "Project Planning","task_description": "Plan the scope and timeline of the project","days_needed": 5, "priority": "High"},
         // { "task_name": "Register Domain Name","task_description": "Register a domain name for project website","days_needed": 1, "priority": "Low"},
@@ -180,9 +258,9 @@ class TaskController extends Controller
         // ';
 
         Option::create([
-            "option_key"=>"project_".($request->project->id)."_generated_tasks",
-            "option_value"=> ($res),
-            "active"=> true
+            "option_key" => "project_" . ($request->project->id) . "_generated_tasks",
+            "option_value" => ($res),
+            "active" => true
         ]);
 
         echo ($res);
@@ -190,15 +268,16 @@ class TaskController extends Controller
     }
 
 
-    public function addAllTasks(Request $request){
-        
-        if(isset($request['all_tasks'])){
+    public function addAllTasks(Request $request)
+    {
 
-            $tasks=($request['all_tasks']);
+        if (isset($request['all_tasks'])) {
 
-            foreach($tasks as $task){
+            $tasks = ($request['all_tasks']);
 
-                $task= (array) $task;
+            foreach ($tasks as $task) {
+
+                $task = (array) $task;
                 // $task['']
 
                 // $tk = Task::create($task);

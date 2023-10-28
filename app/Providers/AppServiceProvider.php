@@ -22,5 +22,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
         ini_set('max_execution_time', -1);
+        date_default_timezone_set("Asia/Karachi");
     }
 }

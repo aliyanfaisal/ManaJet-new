@@ -12,12 +12,41 @@
                     <div class="col-md-3">
                         <form class="needs-validation" novalidate="" method="post">
 
-                            <x-card title="Tasks expiring soon" classes="border border-info"    >
-                                
+                            <x-card title="Tasks expiring Today" classes="border border-info"    >
+                                <x-fancy-table>
+                                    <x-fancy-table-body>
+                                        @foreach($expiringToday as $task)
+                                        <tr >
+                                            <td class="">
+                                                <div class="widget-content px-3 py-2 bg-warning">
+                                                    <div class="widget-content-wrapper "> 
+                                                        <div class="widget-content-left flex2">
+                                                            <div class="widget-heading"> 
+                                                                <a href="{{route('tasks.edit', $task->id)}}">
+                                                                    {{$task->task_name}}
+                                                                </a>
+                                                            </div>
+                                                            <div class="widget-subheading opacity-7" style="font-size: 14px">
+                                                                <span>
+                                                                    <i class="fa fa-user"></i> <b> {{$task->taskLead->name}} </b>
+                                                                </span>
+                                                            |
+                                                                <span>
+                                                                    <i class="fa fa-newspaper"></i> <b> {{$task->project->project_name}} </b>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </x-fancy-table-body>
+                                </x-fancy-table>
+
+                                <div class="container mt-3">{{$expiringToday->appends(request()->except('paginateTaskList'))->links()}}</div>
                             </x-card>
                         </form>
-
-
                     </div>
                     <div class="table-responsive col-md-9">
 
@@ -33,15 +62,26 @@
                             </x-fancy-table-head>
 
                             <x-fancy-table-body>
+
+                                @php
+                                 $i=1;   
+                                @endphp
+                                @foreach ($tasks as $task)
+                                    
+                                
                                 <tr>
-                                    <td class="text-center text-muted">#1</td>
+                                    <td class="text-center text-muted">{{$i}}</td>
                                     <td>
                                         <div class="widget-content p-0">
                                             <div class="widget-content-wrapper"> 
                                                 <div class="widget-content-left flex2">
-                                                    <div class="widget-heading">Install Wordpress</div>
+                                                    <div class="widget-heading"> 
+                                                        <a href="{{route('tasks.edit', $task->id)}}">
+                                                            {{$task->task_name}}
+                                                        </a>
+                                                    </div>
                                                     <div class="widget-subheading opacity-7" style="font-size: 12px">
-                                                        <i class="fa fa-user"> Aliyan Faisal </i>
+                                                        <i class="fa fa-user"></i> <b> {{$task->taskLead->name}} </b>
                                                     </div>
                                                 </div>
                                             </div>
@@ -50,11 +90,11 @@
  
 
                                     <td class="text-center">
-                                        <div class="badge badge-info">Aliyan's Website</div>
+                                        <div class="badge badge-info">{{$task->project->project_name}}</div>
                                     </td>
  
                                     <td class="text-center">
-                                        <div class="badge badge-success">Completed</div>
+                                        <div class="badge badge-success">{{$task->priority}}</div>
                                     </td>
 
                                     <td class="text-center">
@@ -62,153 +102,22 @@
                                             View/Edit
                                         </button>
 
-                                        <button type="button" class="btn btn-success btn-sm">
+                                        <button type="button" class="btn btn-danger btn-sm">
                                             Mark Complete
                                         </button>
                                     </td>
                                 </tr>
+                                @php
+                                $i++;   
+                               @endphp
+                                @endforeach
+                
 
-                                <tr>
-                                    <td class="text-center text-muted">#1</td>
-                                    <td>
-                                        <div class="widget-content p-0">
-                                            <div class="widget-content-wrapper"> 
-                                                <div class="widget-content-left flex2">
-                                                    <div class="widget-heading">Install Wordpress</div>
-                                                    <div class="widget-subheading opacity-7" style="font-size: 12px">
-                                                        <i class="fa fa-user"> Aliyan Faisal </i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
- 
-
-                                    <td class="text-center">
-                                        <div class="badge badge-info">Aliyan's Website</div>
-                                    </td>
- 
-                                    <td class="text-center">
-                                        <div class="badge badge-success">Completed</div>
-                                    </td>
-
-                                    <td class="text-center">
-                                        <button type="button" class="btn btn-primary btn-sm">
-                                            View/Edit
-                                        </button>
-
-                                        <button type="button" class="btn btn-success btn-sm">
-                                            Mark Complete
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center text-muted">#2</td>
-                                    <td>
-                                        <div class="widget-content p-0">
-                                            <div class="widget-content-wrapper"> 
-                                                <div class="widget-content-left flex2">
-                                                    <div class="widget-heading">Createa a contact Form</div>
-                                                    <div class="widget-subheading opacity-7" style="font-size: 12px">
-                                                        <i class="fa fa-user"> Saira</i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
- 
-
-                                    <td class="text-center">
-                                        <div class="badge badge-info">lingo lad</div>
-                                    </td>
- 
-                                    <td class="text-center">
-                                        <div class="badge badge-success">penfing</div>
-                                    </td>
-
-                                    <td class="text-center">
-                                        <button type="button" class="btn btn-primary btn-sm">
-                                            View/Edit
-                                        </button>
-
-                                        <button type="button" class="btn btn-success btn-sm">
-                                            Mark Complete
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center text-muted">#3</td>
-                                    <td>
-                                        <div class="widget-content p-0">
-                                            <div class="widget-content-wrapper"> 
-                                                <div class="widget-content-left flex2">
-                                                    <div class="widget-heading">Build landing page</div>
-                                                    <div class="widget-subheading opacity-7" style="font-size: 12px">
-                                                        <i class="fa fa-user"> Aliyan Faisal </i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
- 
-
-                                    <td class="text-center">
-                                        <div class="badge badge-info">UrbanSofts website</div>
-                                    </td>
- 
-                                    <td class="text-center">
-                                        <div class="badge badge-success">Completed</div>
-                                    </td>
-
-                                    <td class="text-center">
-                                        <button type="button" class="btn btn-primary btn-sm">
-                                            View/Edit
-                                        </button>
-
-                                        <button type="button" class="btn btn-success btn-sm">
-                                            Mark Complete
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center text-muted">#4</td>
-                                    <td>
-                                        <div class="widget-content p-0">
-                                            <div class="widget-content-wrapper"> 
-                                                <div class="widget-content-left flex2">
-                                                    <div class="widget-heading">Ui Ux Designing</div>
-                                                    <div class="widget-subheading opacity-7" style="font-size: 12px">
-                                                        <i class="fa fa-user"> zeshan </i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
- 
-
-                                    <td class="text-center">
-                                        <div class="badge badge-info">Aliyan's Website</div>
-                                    </td>
- 
-                                    <td class="text-center">
-                                        <div class="badge badge-success">Pending</div>
-                                    </td>
-
-                                    <td class="text-center">
-                                        <button type="button" class="btn btn-primary btn-sm">
-                                            View/Edit
-                                        </button>
-
-                                        <button type="button" class="btn btn-success btn-sm">
-                                            Mark Complete
-                                        </button>
-                                    </td>
-                                </tr>
+                              
                             </x-fancy-table-body>
                         </x-fancy-table>
+                        
+                        <div class="mt-3 container">{{$tasks->appends(request()->except('paginateExpiringTasks'))->links()}}</div>
                     </div>
 
 

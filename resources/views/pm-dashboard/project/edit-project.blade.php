@@ -235,7 +235,7 @@
                                     <div class="badge badge-info">{{ $task->priority }}</div>
                                 </td>
 
-                                <td class="text-center">{{ $task->teamLead->name }}</td>
+                                <td class="text-center">{{ $task->taskLead->name }}</td>
 
                                 @php
                                 $now= new DateTime();

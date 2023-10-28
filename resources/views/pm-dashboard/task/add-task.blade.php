@@ -144,7 +144,7 @@
                 <x-fancy-table>
                     <x-fancy-table-head>
                         <tr>
-                            <th class="">#</th>
+                            <th class="">Step#</th>
                             <th>Task Name</th>
                             <th class="">Description</th>
                             <th class='text-center'>Priority</th>
@@ -171,9 +171,9 @@
                         }
                         ?>
                             <tr>
-                                <td>{{ $i }}</td>
+                                <td class='text-center'>{{ $i }}</td>
                                 <td><b>{{ $task->task_name }}</b></td>
-                                <td>{{ $task->task_description }}</td>
+                                <td style="max-width:500px">{{ $task->task_description }}</td>
                                 <td class='text-center'>{{ $task->priority }} </td>
                                 <td class='text-center'>{{ $task->days_needed }}</td>
                                 <td> <button class='btn btn-primary add_gen_task' data-json='{{ json_encode($task) }}'>Edit
@@ -250,7 +250,7 @@
                                         <div class="badge badge-info">{{ $task->priority }}</div>
                                     </td>
 
-                                    <td class="text-center">{{ $task->teamLead->name }}</td>
+                                    <td class="text-center">{{ $task->taskLead->name }}</td>
 
                                     @php
                                         $now = new DateTime();

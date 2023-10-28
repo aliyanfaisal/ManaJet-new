@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Project;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -23,11 +24,11 @@ class Task extends Model
 
     public function project()
     {
-        return $this->belongsTo('App\Project', 'project_id');
+        return $this->belongsTo( Project::class, 'project_id');
     }
 
 
-    public function teamLead(){
+    public function taskLead(){
         return $this->belongsTo(User::class,"task_lead_id",'id');
     }
 }

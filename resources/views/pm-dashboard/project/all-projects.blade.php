@@ -45,7 +45,7 @@
                                             </div>
                                             <div class="widget-content-left flex2">
                                                 <div class="widget-heading"><a href="{{route('project.edit',$project->id)}}">{{$project->project_name}}</a></div>
-                                                <div class="widget-subheading opacity-7"> <b>{{Str::limit($project->project_description,20) }}</b>
+                                                <div class="widget-subheading opacity-7"> <b>{{Str::limit($project->project_description,40) }}</b>
                                                 </div>
                                             </div>
                                         </div>

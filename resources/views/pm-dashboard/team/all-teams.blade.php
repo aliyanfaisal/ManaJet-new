@@ -38,7 +38,7 @@
                                 <x-fancy-table-body>
                                     <tr>
                                         <td class="text-center">
-                                            <div class="badge badge-info " style="font-size:100%">{{$team->teamLead->name}}</div>
+                                            <div class="badge badge-info " style="font-size:100%">{{$team->taskLead->name}}</div>
                                         </td>
      
                                         <td class="text-center">
