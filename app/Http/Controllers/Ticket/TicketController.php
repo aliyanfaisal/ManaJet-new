@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Ticket;
 
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -62,5 +63,26 @@ class TicketController extends Controller
     public function destroy(string $id)
     {
         //
+
+
+        
+    }
+
+
+
+
+    public function submitTicket(Request $request){
+      
+        if (!isset($request->ticket_id) | !isset($request->status)) {
+            return redirect()->back()->with(['message' => "Ticket ID required", "result" => "danger"]);
+        }
+
+        $task= Ticket::findOrFail($request->ticket_id);
+
+        $task->status= $request->status;
+         
+        $task->save();
+
+        return redirect()->back()->with(['message'=> 'Ticket Set to '.strtoupper($request->status), 'result' => 'success']);
     }
 }

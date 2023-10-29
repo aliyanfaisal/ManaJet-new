@@ -20,11 +20,19 @@ class TaskController extends Controller
     public function index()
     {
 
+        $user_id = Auth::user()->id;
         $status = $_GET['status'] ?? "pending";
-        $tasks = Task::where("status", $status)->orderBy("id", "desc")->paginate(10, ['*'], 'paginateTaskList');
 
+        if(Auth::user()->userCan("can_add_task")){
+            $tasks = Task::where("status", $status)->orderBy("id", "desc")->paginate(10, ['*'], 'paginateTaskList');
+            $expiringToday = Task::whereDate("task_deadline", Carbon::today())->where("status","!=","complete")->paginate(10, ['*'], 'paginateExpiringTasks');
 
-        $expiringToday = Task::whereDate("task_deadline", Carbon::today())->where("status","!=","complete")->paginate(10, ['*'], 'paginateExpiringTasks');
+        }
+        else{
+            $tasks = Task::where("status", $status)->where("task_lead_id",$user_id)->orderBy("id", "desc")->paginate(10, ['*'], 'paginateTaskList');
+            $expiringToday = Task::where("status","!=","complete")->where("task_lead_id",$user_id)->paginate(10, ['*'], 'paginateExpiringTasks');
+
+        }
 
         $tasks->appends(['status' => $status]);
         $expiringToday->appends(['status' => $status]);
@@ -78,7 +86,7 @@ class TaskController extends Controller
 
         $validated = $request->validate(
             [
-                "task_name" => "required|unique:tasks,task_name",
+                "task_name" => "required",
                 "task_lead_id" => "required",
                 'task_description' => "required",
                 'task_deadline' => "required",
@@ -122,7 +130,7 @@ class TaskController extends Controller
 
         }
 
-        $task = Task::update($validated);
+        $task = Task::create($validated);
 
         return redirect()->route("tasks.create", ['project_id' => $request->project_id])->with(['message' => 'Task Added Successfully!', 'result' => 'success']);
 
@@ -133,7 +141,9 @@ class TaskController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $task = Task::findOrFail($id);
+        $team_members = $task->project->team->membersData;
+        return view("pm-dashboard.task.details-task", compact("task", 'team_members'));
     }
 
     /**
@@ -144,8 +154,7 @@ class TaskController extends Controller
 
         $task = Task::findOrFail($id);
         $team_members = $task->project->team->membersData;
-
-        return view("pm-dashboard/task/edit-task", compact("task", 'team_members'));
+        return view("pm-dashboard.task.edit-task", compact("task", 'team_members'));
     }
 
     /**
@@ -300,5 +309,30 @@ class TaskController extends Controller
         $task->save();
 
         return redirect()->back()->with(['message'=> 'Task Set to '.strtoupper($request->status), 'result' => 'success']);
+    }
+
+
+
+    public function sendForVerificationTask(Request $request){
+
+        $validated= $request->validate([
+            "task_id"=>"required",
+            "message"=> "required",
+        ]);
+
+        $user_id= Auth::user()->id;
+
+        $save= Option::create([
+            "option_key"=> "task_submit_message_".$user_id,
+            "option_value"=> $validated['message'],
+            "active"=>true
+        ]);
+
+        $task= Task::findOrFail($request->task_id);
+        $task->status= "under-review";
+        $task->save();
+
+
+        return redirect()->back()->with(['message'=>"Task submitted for review","result"=>"success"]);
     }
 }

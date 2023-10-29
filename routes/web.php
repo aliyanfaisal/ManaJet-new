@@ -64,12 +64,18 @@ Route::prefix("/dashboard")->middleware("auth")->group(function(){
     Route::get("/", [DashboardController::class,"superDashboard"])->name("pm-dashboard");
 
     Route::resource('project', ProjectController::class);
+    Route::get('project/{project}', [ProjectController::class,"showBoard"])->name("project.board");
 
     Route::resource('project-categories', ProjectCategoriesController::class);
 
     Route::resource('tasks', TaskController::class);
     Route::post("/tasks/add-all",[TaskController::class,"addAllTasks"])->name("tasks.add_all");
     Route::post("/tasks/submit",[TaskController::class,"submitTask"])->name("tasks.submit");
+    Route::post("/tasks/sendForVerification",[TaskController::class,"sendForVerificationTask"])->name("tasks.sendForVerification");
+
+    Route::resource('tickets', TaskController::class);
+    Route::post("/tickets/submit",[TicketController::class,"submitTicket"])->name("tickets.submit");
+
 
     Route::resource('tickets', TicketController::class);
 

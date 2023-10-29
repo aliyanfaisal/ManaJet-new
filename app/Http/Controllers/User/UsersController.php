@@ -99,6 +99,11 @@ class UsersController extends Controller
         //add user to teans
         if (isset($validated['team_ids'])) {
             foreach ($validated['team_ids'] as $team) {
+
+                if($team==""){
+                    continue;
+                }
+                
                 $team_users = TeamUsers::create([
                     "team_id" => $team,
                     "user_id" => $user->id
@@ -230,6 +235,9 @@ class UsersController extends Controller
             $team_to_add_user = array_diff($validated['team_ids'], $old_team_ids);
 
             foreach ($team_to_add_user as $team) {
+                if($team==""){
+                    continue;
+                }
                 $team_users = TeamUsers::create([
                     "team_id" => $team,
                     "user_id" => $user->id

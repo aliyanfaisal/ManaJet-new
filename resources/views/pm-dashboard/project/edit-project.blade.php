@@ -14,14 +14,24 @@
         </style>
     @endif
 
-
     <div class="container-fluid w-8">
+
+        <x-resource-delete-btn :id="$project->id" idx="project_del_{{ $project->id }}" resource="project"
+            resourceSingle="project" />
+
+
         <div>
             @php
                 $tabb = '';
                 if (Auth::user()->userCan('can_add_project') || Auth::user()->isTeamLead($project->team_id)) {
-                    $tabb = "<a href='" . route('project.destroy', ['project' => $project->id]) . "' class='btn btn-danger '>Delete Project</a>";
+                    $tabb = ' <span>
+                                                <button onclick="deleteResource(\'project_del_'.$project->id.'\')"
+                                                    type="button" class="btn btn-danger btn-sm">
+                                                    Delete Project
+                                                </button>
+                                            </span>';
                 }
+
             @endphp
             <x-card title="<h4><b>{{ $project->project_name }}</b></h4>" :tab1="$tabb" classes="border border-info">
 
@@ -129,22 +139,21 @@
                                         </div>
                                     </div>
 
-                                    @if(!$project->hasTasks())
-                                    <div class="col-md-6 mb-3">
-                                        <label for="team_id">Team</label>
-                                        <select name="team_id" class="custom-select d-block w-100" id="team_id"
-                                            required="">
-                                            <option value="">Choose...</option>
-                                            @foreach ($teams as $team)
-                                                <option @selected($project->team_id == $team->id) value="{{ $team->id }}">
-                                                    {{ $team->team_name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <div class="invalid-feedback">
-                                            Team is required.
+                                    @if (!$project->hasTasks())
+                                        <div class="col-md-6 mb-3">
+                                            <label for="team_id">Team</label>
+                                            <select name="team_id" class="custom-select d-block w-100" id="team_id"
+                                                required="">
+                                                <option value="">Choose...</option>
+                                                @foreach ($teams as $team)
+                                                    <option @selected($project->team_id == $team->id) value="{{ $team->id }}">
+                                                        {{ $team->team_name }}</option>
+                                                @endforeach
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                Team is required.
+                                            </div>
                                         </div>
-                                    </div>
-
                                     @endif
                                 </div>
 
@@ -214,70 +223,72 @@
                         <x-fancy-table-body>
 
                             @php
-                            $i=1;
+                                $i = 1;
                             @endphp
                             @foreach ($tasks as $task)
-                            <tr>
-                                <td class="text-center">{{ $i }}</td>
-                                <td>
-                                    <div class="widget-content p-0">
-                                        <div class="widget-content-wrapper">
-                                            <div class="widget-content-left flex2">
-                                                <div class="widget-heading"><a
-                                                        href="{{ route('tasks.edit', $task->id) }}">{{ $task->task_name }}</a>
-                                                </div>
-                                                <div class="widget-subheading opacity-7">
-                                                    <b>{{ Str::limit($task->task_description, 20) }}</b>
+                                <tr>
+                                    <td class="text-center">{{ $i }}</td>
+                                    <td>
+                                        <div class="widget-content p-0">
+                                            <div class="widget-content-wrapper">
+                                                <div class="widget-content-left flex2">
+                                                    <div class="widget-heading"><a
+                                                            href="{{ route('tasks.edit', $task->id) }}">{{ $task->task_name }}</a>
+                                                    </div>
+                                                    <div class="widget-subheading opacity-7">
+                                                        <b>{{ Str::limit($task->task_description, 20) }}</b>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
-
-                                {{-- <td class="text-center">{{ $task}}</td> --}}
-
-                                <td class="text-center">
-                                    <div class="badge badge-info">{{ $task->priority }}</div>
-                                </td>
-
-                                <td class="text-center">{{ $task->taskLead->name }}</td>
-
-                                @php
-                                $now= new DateTime();
-                                $then= new DateTime($task->task_deadline);
-                            
-                                $interval = $then->diff($now);
-                                
-                                @endphp
-                                <td class="text-center text-underline">
-                                    <div class="badge badge-secondary">{{ $interval->days }} Day(s)</div>
                                     </td>
 
-                                <td class="text-center">
-                                    <div class="badge badge-@if( $task->status=='complete'){{'success'}} @else{{'warning'}} @endif">{{ $task->status }}</div>
-                                </td>
+                                    {{-- <td class="text-center">{{ $task}}</td> --}}
 
-                                <td class="text-center">
-                                    <a href="{{ route('tasks.edit', $project->id) }}" type="button"
-                                        class="btn btn-primary btn-sm">
-                                        View/Edit
-                                    </a>
+                                    <td class="text-center">
+                                        <div class="badge badge-info">{{ $task->priority }}</div>
+                                    </td>
 
-                                    <button type="button" class="btn btn-danger btn-sm">
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
+                                    <td class="text-center">{{ $task->taskLead->name }}</td>
 
                                     @php
-                                    $i++;
+                                        $now = new DateTime();
+                                        $then = new DateTime($task->task_deadline);
+
+                                        $interval = $then->diff($now);
+
                                     @endphp
+                                    <td class="text-center text-underline">
+                                        <div class="badge badge-secondary">{{ $interval->days }} Day(s)</div>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <div
+                                            class="badge badge-@if ($task->status == 'complete'){{ 'success' }} @else{{ 'warning' }} @endif">
+                                            {{ $task->status }}</div>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <a href="{{ route('tasks.edit', $project->id) }}" type="button"
+                                            class="btn btn-primary btn-sm">
+                                            View/Edit
+                                        </a>
+
+                                        <button type="button" class="btn btn-danger btn-sm">
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                @php
+                                    $i++;
+                                @endphp
                             @endforeach
                         </x-fancy-table-body>
                     </x-fancy-table>
 
                     <div>
-                        {{$tasks->links()}}
+                        {{ $tasks->links() }}
                     </div>
                 </div>
 

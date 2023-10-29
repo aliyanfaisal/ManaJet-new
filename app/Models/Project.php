@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Project extends Model
+class                                                                                                               Project extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory;
 
     protected $dates = ['deleted_at'];  
     protected $fillable = [
@@ -96,7 +96,7 @@ class Project extends Model
 
     public function hasTasks(){
         $tasks= Task::where("project_id",$this->id)->count();
-dd($tasks);
+
         if($tasks > 0){
             return true;
         }

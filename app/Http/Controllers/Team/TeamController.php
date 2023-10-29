@@ -77,7 +77,6 @@ class TeamController extends Controller
                 ]
             );
 
-
         $title="You are added as Team Lead  in Team ( {$team->team_name} )";
         $content= "Manage your Team Now";
 
@@ -138,7 +137,20 @@ class TeamController extends Controller
         );
 
         $team = Team::findOrFail($id);
+        $old_team_lead= $team->team_lead_id;
         $update = $team->update($validated);
+        
+        if($old_team_lead != $validated['team_lead_id']){
+            
+            $tm = TeamUsers::create(
+                [
+                    "team_id" => $team->id,
+                    "user_id" => $validated['team_lead_id']
+                ]
+                );
+
+            TeamUsers::where("user_id",$old_team_lead)->where("team_id",$team->id)->delete();
+        }
 
         return redirect()->route('teams.edit', ["team" => $team->id])->with(["message" => "Team updated successfully", "result" => "success"]);
     }

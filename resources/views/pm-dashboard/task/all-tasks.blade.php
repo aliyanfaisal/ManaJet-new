@@ -60,6 +60,7 @@
                                 <tr>
                                     <th class="text-center">#</th>
                                     <th>Task Title</th>
+                                    <th>Task Description</th>
                                     <th class="text-center">Project</th>
                                     <th class="text-center">Priority</th>
                                     <th class="text-center">Actions</th>
@@ -94,6 +95,10 @@
                                     </td>
  
 
+                                    <td class="">
+                                        <div  >{{$task->task_description}}</div>
+                                    </td>
+
                                     <td class="text-center">
                                         <div class="badge badge-info">{{$task->project->project_name}}</div>
                                     </td>
@@ -103,8 +108,11 @@
                                     </td>
 
                                     <td class="text-center">
+                                        <a href="{{route('tasks.show', ['task'=>$task->id])}}" type="button" class="btn btn-info btn-sm">
+                                            View
+                                        </a>
                                         <a href="{{route('tasks.edit', ['task'=>$task->id])}}" type="button" class="btn btn-primary btn-sm">
-                                            View/Edit
+                                            Edit
                                         </a>
 
                                         @if($_GET['status']=="under-review")

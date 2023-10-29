@@ -97,6 +97,14 @@ class ProjectCategoriesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        if(!Auth::user()->userCan("can_add_project_category")){
+            abort(403);
+        }
+
+
+        $ProjectCategories= ProjectCategories::findOrFail($id);
+        $ProjectCategories->delete();
+
+        return redirect()->route("project-categories.index")->with(['message'=>"Project Deleted Successfully!","result"=>"success"]);
     }
 }

@@ -19,4 +19,15 @@
 
 
 
+function deleteResource(id){
+
+    let $confirm= confirm("Are you sure you want to delete?")
+
+    if($confirm){
+        $("#"+id).submit()
+    }
+    
+}
+
+
 </script>

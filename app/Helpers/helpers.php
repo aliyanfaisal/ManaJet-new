@@ -10,7 +10,6 @@ function sendNotifcation($user_id, $title, $content, $link=""){
         return false;
     }
 
-
     $notification= Notification::create([
         "notification_title"=> $title,
         "notification_content"=> $content,
@@ -18,9 +17,12 @@ function sendNotifcation($user_id, $title, $content, $link=""){
         "link"=> $link
     ]);
 
+
     if(is_connected()){
-        $user_phone= User::find($user_id)->pluck("phone"); 
-        TwilioController::sendWhatsAppNotification($user_phone, "*$title* %0a %0a". $content);
+        $user_phone= User::find($user_id); 
+        TwilioController::sendWhatsAppNotification($user_phone->phone, "*$title* \n\n". $content);
+
+       
     }
    
 
@@ -33,11 +35,18 @@ function sendNotifcation($user_id, $title, $content, $link=""){
 
 function is_connected()
 {
-  $connected = fopen("http://www.google.com:80/","r");
-  if($connected)
-  {
-     return true;
-  } else {
-   return false;
-  }
+
+    ini_set('max_execution_time',0);
+    
+    ob_start();
+    $connected =system("ping -c 1 google.com", $response);
+    ob_get_contents();
+    ob_clean();
+
+    if($connected!="")
+    {
+        return true;
+    } else {
+        return false;
+    }
 } 

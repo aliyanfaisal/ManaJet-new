@@ -42,7 +42,9 @@
                                                     </div>
                                                 </div>
                                                 <div class="widget-content-left flex2">
+                                                    <a href="{{ route('users.edit', $user->id) }}">
                                                     <div class="widget-heading">{{ $user->name }}</div>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>

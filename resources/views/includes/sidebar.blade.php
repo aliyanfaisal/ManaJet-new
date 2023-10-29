@@ -81,11 +81,13 @@
                 
                 <li>
                     @if($authUser->userCan("can_view_task"))
+
+                    @if($authUser->leadOfTeams()->isNotEmpty())
                     <a href="{{route("tasks.index", ['status'=>'under-review'])}}">
                         <i class="metismenu-icon pe-7s-display2"></i>
                         Submitted Tasks
                     </a>
-
+                    @endif 
                     <a href="{{route("tasks.index", ['status'=>'pending'])}}">
                         <i class="metismenu-icon pe-7s-display2"></i>
                         On Going Tasks
@@ -103,11 +105,11 @@
                     </a>
                     @endif
 
-
+{{-- 
                     <a href="dashboard-boxes.html">
                         <i class="metismenu-icon pe-7s-display2"></i>
                         Details Board
-                    </a>
+                    </a> --}}
 
                 </li>
 
@@ -130,12 +132,12 @@
                     @endif
                 </li>
                 @if($authUser->userCan("can_view_team") || $authUser->isATeamLead())
-                <li>
+                {{-- <li>
                     <a href="">
                         <i class="metismenu-icon pe-7s-eyedropper">
                         </i>Team Stats
                     </a>
-                </li>
+                </li> --}}
                 @endif 
 
                 @if($authUser->userCan("can_add_user") || $authUser->userCan("can_add_permission"))
@@ -166,6 +168,16 @@
                     </a>
                     @endif
                 </li>
+
+                @if($authUser->userCan("can_chat"))
+                <li class="app-sidebar__heading">Settings</li>
+                <li>
+                    <a href="charts-chartjs.html">
+                        <i class="metismenu-icon pe-7s-graph2">
+                        </i>Messenger
+                    </a>
+                </li>
+                @endif
 
                 @if($authUser->userCan("can_manage_options"))
                 <li class="app-sidebar__heading">Settings</li>

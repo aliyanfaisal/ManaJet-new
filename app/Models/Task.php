@@ -31,4 +31,8 @@ class Task extends Model
     public function taskLead(){
         return $this->belongsTo(User::class,"task_lead_id",'id');
     }
+
+    public function message($user_id){
+        return Option::where("option_key","task_submit_message_".$user_id)->pluck("option_value")[0];
+    }
 }

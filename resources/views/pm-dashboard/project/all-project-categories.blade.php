@@ -122,9 +122,19 @@
                                                 Edit/View
                                             </button>
 
-                                            <button type="button" class="btn btn-danger btn-sm">
-                                                Delete
-                                            </button>
+                                            <span>
+                                                <x-resource-delete-btn :id="$cat->id"
+                                                    idx="project_cat_del_{{ $cat->id }}" resource="project-categories"
+                                                    resourceSingle="project_category" />
+
+
+                                                <button onclick="deleteResource('project_cat_del_{{ $cat->id }}')"
+                                                    type="button" class="btn btn-danger btn-sm">
+                                                    Delete 
+                                                </button>
+                                            </span>
+
+
                                         </td>
                                     </tr>
 

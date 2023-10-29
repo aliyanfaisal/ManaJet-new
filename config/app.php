@@ -19,7 +19,7 @@ return [
     'name' => env('APP_NAME', 'Laravel'),
     "default_permissions"=>[7,8,9,10,11],
     "twilio_sid"=>env("TWILIO_SID","AC029ddf40cfa96ed864c07ebf3319b037"),
-    "twilio_auth_key"=>env("TWILIO_AUTH_KEY","1fb1eaffed37e4c6505e7c130e7c6fce"),
+    "twilio_auth_key"=>env("TWILIO_AUTH_KEY","654c0478713cf2ea42af3465bffb13df"),
 
     /*
     |--------------------------------------------------------------------------

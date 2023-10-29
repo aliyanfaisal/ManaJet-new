@@ -146,4 +146,9 @@ class User extends Authenticatable
         $team= Team::findOrFail($team_id);
         return in_array( $this->id,$team->getMemberIDs());
     }
+
+
+    public function leadOfTeams(){
+       return $team_lead= Team::where("team_lead_id",$this->id)->get();
+    }
 }

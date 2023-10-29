@@ -6,6 +6,7 @@ use App\Models\File;
 use App\Models\Task;
 use App\Models\Team;
 use App\Models\Project;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use App\Models\ProjectCategories;
 use App\Http\Controllers\Controller;
@@ -110,7 +111,7 @@ class ProjectController extends Controller
 
         $team= Team::findOrFail($validated['team_id']);
 
-        $title="Your Team ( {$team->team_name} ) has been assigned a New Project";
+        $title="Your Team ( {$team->team_name} ) has been assigned a New Project ( {$project->project_name} )";
         $link= route("project.edit", ["project",$project->id]);
         $content= "Please add Task and Assign to Users";
 
@@ -188,7 +189,7 @@ class ProjectController extends Controller
 
             $team= Team::findOrFail($validated['team_id']);
 
-            $title="Your Team ( {$team->team_name} ) has been assigned a New Project";
+            $title="Your Team ( {$team->team_name} ) has been assigned a New Project ( {$project->project_name} )";
             $link= route("project.edit", ["project",$project->id]);
             $content= "Please add Task and Assign to Users";
 
@@ -253,6 +254,19 @@ class ProjectController extends Controller
         }
 
 
-        echo "sdfg";
+        $project= Project::findOrFail($id);
+        $project->delete();
+
+        return redirect()->route("project.index")->with(['message'=>"Project Deleted Successfully!","result"=>"success"]);
+    }
+
+
+    public function showBoard($id){
+
+        $project= Project::findOrFail($id);
+        $tasks= Task::where("project_id",$id)->paginate(10);
+        $tickets= Ticket::where("project_id",$id)->paginate(10);
+
+        return view("pm-dashboard.project.board", compact("project","tasks","tickets")); 
     }
 }

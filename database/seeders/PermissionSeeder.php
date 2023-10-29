@@ -48,7 +48,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'can_view_ticket',
-                [1, 2, 3, 4, 5,8]
+                [1]
             ],
             [
                 'can_chat',
