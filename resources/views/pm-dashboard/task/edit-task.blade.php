@@ -99,6 +99,7 @@
                                                 
                                         <select class="form-control" name="status" id="status">
                                             <option value="pending" @selected($task->status=="pending")>Pending</option>
+                                            <option value="under-review" @selected($task->status=="under-review")>Under Review</option> 
                                             <option value="complete" @selected($task->status=="complete")>Complete</option>
                                         
                                             </select>
@@ -154,8 +155,11 @@
     <script>
         var selectedDate = new Date('<?php echo $task->task_deadline; ?>');
 
-        var formattedDate = selectedDate.toISOString().split('T')[0];
+        var day = ("0" + selectedDate.getDate()).slice(-2);
+        var month = ("0" + (selectedDate.getMonth() + 1)).slice(-2);
 
-        $("#task_deadline").val(formattedDate)
+        var today = selectedDate.getFullYear()+"-"+(month)+"-"+(day) ;
+
+        $("#task_deadline").val(today)
     </script>
 @endsection

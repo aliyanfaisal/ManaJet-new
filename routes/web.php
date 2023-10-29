@@ -8,6 +8,7 @@ use App\Http\Controllers\Task\TaskController;
 use App\Http\Controllers\Team\TeamController;
 use App\Http\Controllers\User\UsersController;
 use App\Http\Controllers\Ticket\TicketController;
+use App\Http\Controllers\Twilio\TwilioController;
 use App\Http\Controllers\UserRole\RoleController;
 use App\Http\Controllers\Project\ProjectController;
 use App\Http\Controllers\dashboard\DashboardController;
@@ -68,6 +69,7 @@ Route::prefix("/dashboard")->middleware("auth")->group(function(){
 
     Route::resource('tasks', TaskController::class);
     Route::post("/tasks/add-all",[TaskController::class,"addAllTasks"])->name("tasks.add_all");
+    Route::post("/tasks/submit",[TaskController::class,"submitTask"])->name("tasks.submit");
 
     Route::resource('tickets', TicketController::class);
 
@@ -98,3 +100,5 @@ Route::prefix("/member/dashboard")->group(function(){
 
 
 
+
+Route::get('/send-notification', [TwilioController::class,"sendWhatsAppNotification"]);

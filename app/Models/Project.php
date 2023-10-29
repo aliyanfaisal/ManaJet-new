@@ -94,4 +94,16 @@ class Project extends Model
     }
 
 
+    public function hasTasks(){
+        $tasks= Task::where("project_id",$this->id)->count();
+dd($tasks);
+        if($tasks > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+
 }

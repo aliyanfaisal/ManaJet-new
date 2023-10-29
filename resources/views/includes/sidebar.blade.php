@@ -81,6 +81,11 @@
                 
                 <li>
                     @if($authUser->userCan("can_view_task"))
+                    <a href="{{route("tasks.index", ['status'=>'under-review'])}}">
+                        <i class="metismenu-icon pe-7s-display2"></i>
+                        Submitted Tasks
+                    </a>
+
                     <a href="{{route("tasks.index", ['status'=>'pending'])}}">
                         <i class="metismenu-icon pe-7s-display2"></i>
                         On Going Tasks

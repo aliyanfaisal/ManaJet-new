@@ -24,7 +24,7 @@ class TaskController extends Controller
         $tasks = Task::where("status", $status)->orderBy("id", "desc")->paginate(10, ['*'], 'paginateTaskList');
 
 
-        $expiringToday = Task::whereDate("task_deadline", Carbon::today())->paginate(10, ['*'], 'paginateExpiringTasks');
+        $expiringToday = Task::whereDate("task_deadline", Carbon::today())->where("status","!=","complete")->paginate(10, ['*'], 'paginateExpiringTasks');
 
         $tasks->appends(['status' => $status]);
         $expiringToday->appends(['status' => $status]);
@@ -170,6 +170,7 @@ class TaskController extends Controller
                 'task_deadline' => "required",
                 'priority' => "required",
                 'task_step_no' => "nullable",
+                "status"=>"required"
 
             ],
             [
@@ -283,5 +284,21 @@ class TaskController extends Controller
                 // $tk = Task::create($task);
             }
         }
+    }
+
+
+    public function submitTask(Request $request){
+
+        if (!isset($request->task_id) | !isset($request->status)) {
+            return redirect()->back()->with(['message' => "Task ID required", "result" => "danger"]);
+        }
+
+        $task= Task::findOrFail($request->task_id);
+
+        $task->status= $request->status;
+         
+        $task->save();
+
+        return redirect()->back()->with(['message'=> 'Task Set to '.strtoupper($request->status), 'result' => 'success']);
     }
 }

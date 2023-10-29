@@ -1,6 +1,8 @@
 @extends('layouts.superadmin_app')
 
 @section('content')
+
+
     @if (!Auth::user()->userCan('can_add_project') && !Auth::user()->isTeamLead($project->team_id))
         <style>
             input,
@@ -126,6 +128,8 @@
                                             Budget field is required.
                                         </div>
                                     </div>
+
+                                    @if(!$project->hasTasks())
                                     <div class="col-md-6 mb-3">
                                         <label for="team_id">Team</label>
                                         <select name="team_id" class="custom-select d-block w-100" id="team_id"
@@ -141,6 +145,7 @@
                                         </div>
                                     </div>
 
+                                    @endif
                                 </div>
 
                                 <div class="row">

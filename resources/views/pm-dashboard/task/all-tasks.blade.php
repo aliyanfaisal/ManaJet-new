@@ -7,6 +7,11 @@
               $title= "All ".(isset($_GET['status']) ? $_GET['status'] : '')." Tasks";
             @endphp
             <x-card :title="$title" classes="border border-info">
+
+                <x-display-errors />
+
+                <x-display-form-errors />
+
                 <div class="row">
 
                     <div class="col-md-3">
@@ -98,13 +103,22 @@
                                     </td>
 
                                     <td class="text-center">
-                                        <button type="button" class="btn btn-primary btn-sm">
+                                        <a href="{{route('tasks.edit', ['task'=>$task->id])}}" type="button" class="btn btn-primary btn-sm">
                                             View/Edit
-                                        </button>
+                                        </a>
 
-                                        <button type="button" class="btn btn-danger btn-sm">
+                                        @if($_GET['status']=="under-review")
+
+                                        <form class="d-inline-block" action="{{route('tasks.submit')}}" method="post">
+                                        @csrf
+                                        <input type="text" hidden name="task_id" value="{{$task->id}}">
+                                        <input value="complete" hidden name="status">
+                                        <button type="submit" class="btn btn-danger btn-sm">
                                             Mark Complete
                                         </button>
+                                        </form>
+                                        
+                                        @endif
                                     </td>
                                 </tr>
                                 @php

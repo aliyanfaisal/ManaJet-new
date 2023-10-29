@@ -184,6 +184,18 @@ class ProjectController extends Controller
         
         $update = $project->update($validated);
 
+        if($project->wasChanged("team_id")){
+
+            $team= Team::findOrFail($validated['team_id']);
+
+            $title="Your Team ( {$team->team_name} ) has been assigned a New Project";
+            $link= route("project.edit", ["project",$project->id]);
+            $content= "Please add Task and Assign to Users";
+
+            sendNotifcation($team->team_lead_id, $title, $content, $link);
+
+        }
+
         if($request->file("project_image")){
         
             $old_file= File::where("id", $project->project_image_id)->first();
