@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
+use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\Task\TaskController;
 use App\Http\Controllers\Team\TeamController;
 use App\Http\Controllers\User\UsersController;
@@ -108,3 +109,12 @@ Route::prefix("/member/dashboard")->group(function(){
 
 
 Route::get('/send-notification', [TwilioController::class,"sendWhatsAppNotification"]);
+
+
+
+Route::prefix("chat")->middleware("auth")->group(function(){
+
+    Route::get("/", [ChatController::class,"index"])->name("chat.index");
+    Route::get("/messages/{id}", [ChatController::class,"showMessages"])->name("chat.show");
+    Route::post("/messages", [ChatController::class,"sendMessages"])->name("chat.send");
+});

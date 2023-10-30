@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
-            $table->string("chat_name", 50)->nullable();
-            $table->boolean("isGroup");
+            $table->string("chat_name", 500)->nullable();
+            $table->boolean("isGroup")->nullable()->default(0);
 
-            $table->foreignId("sender_id")->references("id")->on("users")->onDelete("cascade")->nullable();
-            $table->foreignId("receiver_id")->references("id")->on("users")->onDelete("cascade")->nullable();
-            $table->foreignId("team_id")->references("id")->on("teams")->onDelete("cascade")->nullable();
+            $table->foreignId("sender_id")->nullable()->references("id")->on("users")->onDelete("cascade");
+            $table->foreignId("receiver_id")->nullable()->references("id")->on("users")->onDelete("cascade");
+            $table->foreignId("team_id")->nullable()->references("id")->on("teams")->onDelete("cascade");
 
             $table->timestamps();
         });

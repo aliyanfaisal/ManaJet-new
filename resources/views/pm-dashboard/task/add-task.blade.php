@@ -265,7 +265,7 @@
 
                                     <td class="text-center">
                                         <div
-                                            class="badge badge-@if ($task->status == 'complete') {{ 'success' }} @else{{ 'warning' }} @endif">
+                                            class="badge badge-@if ($task->status == 'complete'){{ 'success' }} @else{{ 'warning' }} @endif">
                                             {{ $task->status }}</div>
                                     </td>
 

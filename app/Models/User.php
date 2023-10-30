@@ -151,4 +151,23 @@ class User extends Authenticatable
     public function leadOfTeams(){
        return $team_lead= Team::where("team_lead_id",$this->id)->get();
     }
+
+
+    public function messagesWith($with_user_id){
+
+        $chat= Chat::where("sender_id",$this->id)->where("receiver_id", $with_user_id)->first();
+
+        if($chat==null){
+            $chat= Chat::where("sender_id",$with_user_id)->where("receiver_id", $this->id)->first();
+        }
+
+        $msgs=null;
+        if($chat!=null){
+            $msgs= Message::where("chat_id", $chat->id)->get();
+        }
+
+        return $msgs;
+    }
+
+
 }

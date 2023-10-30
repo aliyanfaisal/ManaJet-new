@@ -71,7 +71,7 @@ class UsersController extends Controller
                 "phone.required" => "User Phone is required"
             ]
         );
-
+ 
 
         $randPass = Random::generate(10);
         $validated['password'] = Hash::make($randPass);
@@ -98,14 +98,24 @@ class UsersController extends Controller
 
         //add user to teans
         if (isset($validated['team_ids'])) {
-            foreach ($validated['team_ids'] as $team) {
 
-                if($team==""){
-                    continue;
+            if(is_array($validated['team_ids'])){
+
+                foreach ($validated['team_ids'] as $team) {
+
+                    if($team==""){
+                        continue;
+                    }
+                    
+                    $team_users = TeamUsers::create([
+                        "team_id" => $team,
+                        "user_id" => $user->id
+                    ]);
                 }
-                
+            }
+            else{
                 $team_users = TeamUsers::create([
-                    "team_id" => $team,
+                    "team_id" => $validated['team_ids'],
                     "user_id" => $user->id
                 ]);
             }

@@ -23,7 +23,7 @@
         <div>
             @php
                 $tabb = '';
-                if (Auth::user()->userCan('can_add_project') || Auth::user()->isTeamLead($project->team_id)) {
+                if (Auth::user()->userCan('can_add_project')  ) {
                     $tabb = ' <span>
                                                 <button onclick="deleteResource(\'project_del_'.$project->id.'\')"
                                                     type="button" class="btn btn-danger btn-sm">
@@ -269,7 +269,7 @@
                                     </td>
 
                                     <td class="text-center">
-                                        <a href="{{ route('tasks.edit', $project->id) }}" type="button"
+                                        <a href="{{ route('tasks.edit', $task->id) }}" type="button"
                                             class="btn btn-primary btn-sm">
                                             View/Edit
                                         </a>

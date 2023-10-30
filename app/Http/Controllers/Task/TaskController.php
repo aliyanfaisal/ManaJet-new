@@ -54,9 +54,8 @@ class TaskController extends Controller
         $project = Project::findOrFail($project_id);
         $team_members = $project->team->membersData;
 
-        $tasks = Task::where("project_id", $project->id)->orderBy("task_step_no", "desc")->paginate(10);
-
-
+        $tasks = Task::where("project_id", $project->id)->orderBy("task_step_no", "asc")->paginate(10);
+ 
         $generated_tasks = Option::where("option_key", "project_" . ($project->id) . "_generated_tasks")->orderBy("id", "desc")->first();
 
         if ($generated_tasks != null) {
