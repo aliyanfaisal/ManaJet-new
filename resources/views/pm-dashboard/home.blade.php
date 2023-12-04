@@ -7,39 +7,40 @@
         <div class="app-page-title">
             <div class="row">
                 <div class="col-md-6 col-xl-4">
-                    <x-stats-card title="Total Projects" sub_title='Last Year' number="123">
+                    <x-stats-card title="Total Projects" sub_title='All Time' number="{{$total_projects}}">
 
                     </x-stats-card>
                 </div>
                 <div class="col-md-6 col-xl-4">
-                    <x-stats-card title="Total Tickets Solved" sub_title='Days' number="12" bg='bg-arielle-smile'>
+                    <x-stats-card title="Total Income" sub_title='All Time' number="{{($total_income)}}PKR" bg='bg-arielle-smile'>
 
                     </x-stats-card>
                 </div>
                 <div class="col-md-6 col-xl-4">
-                    <x-stats-card title="Team Aliyan" sub_title='Top Performing' number="4" bg='bg-grow-early'>
+                    <x-stats-card title="{{($best_team!=null) ? $best_team->team_name : ''}}" sub_title='Top Performing Team'
+                         number="{{$best_team_projects}}" bg='bg-grow-early'>
 
                     </x-stats-card>
                 </div>
                 <div class="d-xl-nones d-lg-block col-md-6 col-xl-4">
-                    <x-stats-card title="Total Income" sub_title='Last Month' number="$220" bg=' bg-premium-dark'>
+                    <x-stats-card title="Total Tickets Solved" sub_title='This Month' number="{{$total_tickets}}" bg=' bg-premium-dark'>
 
                     </x-stats-card>
                 </div>
                 <div class="d-xl-nones d-lg-block col-md-6 col-xl-4">
-                    <x-stats-card title="Tasks Completed" sub_title='Today' number="$220" bg='bg-arielle-smile'>
+                    <x-stats-card title="Tasks Completed" sub_title='This Month' number="{{$total_tasks}}" bg='bg-arielle-smile'>
 
                     </x-stats-card>
                 </div>
                 <div class="d-xl-nones d-lg-block col-md-6 col-xl-4">
-                    <x-stats-card title="All Users" sub_title='Last Month' number="20" bg=' bg-midnight-bloom'>
+                    <x-stats-card title="All Users" sub_title='' number="{{$total_users}}" bg=' bg-midnight-bloom'>
 
                     </x-stats-card>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12 col-lg-6">
-                    <x-card title='Projects Completed in Last 30 days' tab1='View 1' tab2='View 2'>
+                    <x-card title='Projects Completed in Last 30 days' tab1='This Month' >
 
                         <div class="card-body">
                             <div class="tab-content">
